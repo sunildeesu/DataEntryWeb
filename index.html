@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QA/QC Data Entry - Drone Survey</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>QA/QC Data Entry Form</h1>
+            <p class="subtitle">Drone Survey Data - QAQC-FS8-Acceptance</p>
+        </header>
+
+        <form id="qaqcForm">
+            <!-- METADATA SECTION -->
+            <section class="form-section">
+                <h2>Examiner Information</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="examinerName">Name of Examiner <span class="required">*</span></label>
+                        <select id="examinerName" name="examinerName" required>
+                            <option value="">Select Examiner</option>
+                            <option value="JIJI PAREKKATTU">JIJI PAREKKATTU</option>
+                            <option value="B R RAJEE">B R RAJEE</option>
+                            <option value="SYEDA HAFEEZA SULTANA">SYEDA HAFEEZA SULTANA</option>
+                            <option value="CHANDRAKALA M S">CHANDRAKALA M S</option>
+                            <option value="CHETANA S">CHETANA S</option>
+                            <option value="GANESH M S">GANESH M S</option>
+                            <option value="BALASWAMY Y">BALASWAMY Y</option>
+                            <option value="SALILA P R">SALILA P R</option>
+                            <option value="USHA MAGESHWARI">USHA MAGESHWARI</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="designation">Designation <span class="required">*</span></label>
+                        <select id="designation" name="designation" required>
+                            <option value="">Select Designation</option>
+                            <option value="OFFICER SURVEYOR">OFFICER SURVEYOR</option>
+                            <option value="SURVEYOR">SURVEYOR</option>
+                            <option value="D/MAN DIV I">D/MAN DIV I</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <section class="form-section">
+                <h2>Timeline & Dates</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="commencedOn">Commenced On <span class="required">*</span></label>
+                        <input type="date" id="commencedOn" name="commencedOn" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="finishedOn">Finished On <span class="required">*</span></label>
+                        <input type="date" id="finishedOn" name="finishedOn" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="noOfDays">No of Days</label>
+                        <input type="number" id="noOfDays" name="noOfDays" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="dataReceivedDate">Data Received Date <span class="required">*</span></label>
+                        <input type="date" id="dataReceivedDate" name="dataReceivedDate" required>
+                    </div>
+                </div>
+            </section>
+
+            <section class="form-section">
+                <h2>Location & Submission Details</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="district">District <span class="required">*</span></label>
+                        <select id="district" name="district" required>
+                            <option value="">Select District</option>
+                            <option value="BELAGAVI">BELAGAVI</option>
+                            <option value="HASSAN">HASSAN</option>
+                            <option value="TUMAKURU">TUMAKURU</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="taluk">Taluk <span class="required">*</span></label>
+                        <select id="taluk" name="taluk" required>
+                            <option value="">Select Taluk</option>
+                            <option value="ALUR">ALUR</option>
+                            <option value="ARASIKERE">ARASIKERE</option>
+                            <option value="BELUR">BELUR</option>
+                            <option value="CHANNARAYAPATNA">CHANNARAYAPATNA</option>
+                            <option value="CHIKKANAYAKANAHALLI">CHIKKANAYAKANAHALLI</option>
+                            <option value="GUBBI">GUBBI</option>
+                            <option value="HASSAN">HASSAN</option>
+                            <option value="HOLE NARSIPURA">HOLE NARSIPURA</option>
+                            <option value="MADHUGIRI">MADHUGIRI</option>
+                            <option value="PAVAGADA">PAVAGADA</option>
+                            <option value="SAKALESHPURA">SAKALESHPURA</option>
+                            <option value="SIRA">SIRA</option>
+                            <option value="TIPTUR">TIPTUR</option>
+                            <option value="TURUVEKERE">TURUVEKERE</option>
+                            <option value="YERAGATTI">YERAGATTI</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="submissionType">Fresh Submission / Resubmission <span class="required">*</span></label>
+                        <input type="text" id="submissionType" name="submissionType" placeholder="e.g., FS-8, RS-1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="hardDiskNo">Hard Disk No <span class="required">*</span></label>
+                        <input type="text" id="hardDiskNo" name="hardDiskNo" placeholder="e.g., AEREO-ADPO253" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="agency">Name of Empanelled Agency <span class="required">*</span></label>
+                        <select id="agency" name="agency" required>
+                            <option value="">Select Agency</option>
+                            <option value="AEREO">AEREO</option>
+                            <option value="DALE">DALE</option>
+                            <option value="GEOKNO">GEOKNO</option>
+                            <option value="MARVEL">MARVEL</option>
+                            <option value="MATRIX">MATRIX</option>
+                            <option value="NEOGEO">NEOGEO</option>
+                            <option value="PIONEER">PIONEER</option>
+                            <option value="SAPTRISHI">SAPTRISHI</option>
+                            <option value="VIDTEQ">VIDTEQ</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VILLAGE DATA ENTRIES -->
+            <section class="form-section">
+                <h2>Village Data Entries</h2>
+                <div class="table-controls">
+                    <button type="button" id="addRow" class="btn btn-primary">+ Add Village Entry</button>
+                    <button type="button" id="removeRow" class="btn btn-secondary">- Remove Last Entry</button>
+                    <button type="button" id="undoRemove" class="btn btn-info" disabled>↺ Undo Remove</button>
+                </div>
+
+                <div class="table-wrapper">
+                    <table id="villageDataTable">
+                        <thead>
+                            <tr>
+                                <th rowspan="2">SL No.</th>
+                                <th rowspan="2">Tile No</th>
+                                <th rowspan="2">Village Name</th>
+                                <th rowspan="2">LGD CODE</th>
+                                <th rowspan="2">AREA</th>
+                                <th rowspan="2">TALUK</th>
+                                <th rowspan="2">HOBLI</th>
+                                <th rowspan="2">Date of flying</th>
+                                <th rowspan="2">No. of flights</th>
+                                <th rowspan="2">Flying Height (in meters)</th>
+                                <th rowspan="2">No. of Raw Images</th>
+                                <th rowspan="2">Intra Flight overlap (52m)<br><small>(3.2.(i).d-WFD)</small></th>
+                                <th rowspan="2">1. File naming(3.3.1)<br>2. Raw & RINEX Data of Ibase(3.3.2.i)<br>3. GPS Log Sheet(3.3.2.ii)<br>4. Base line Processing and(3.8.IV)<br>5. Network adjustment Report(3.8.VI)<br>6. UAV processing Report(3.3.7)<br>7. PPK Rower Raw Data/Flight Log availabe in data(3.3.3)<br>8. Projection, Datum(3.3.6)<br>9.QA/QC Report(3.4)</th>
+                                <th rowspan="2">1. GPS instrument Dual frequency(3.2.c)<br>2. Nearest 3 CORS Stations<br>3. Correct coordinates of CORS(3.6)<br>4. Solution fixed for all Baselines(3.5)<br>5. Network Adjustment passed for 95% accuracy(3.5.(iii).d)<br>6. Geo-tagging done using correct Ibase(3.8.V-WFD)<br>7.Check points provided 5 per village(3.5.II.3)<br>8. Epoch-allowed 01 sec(3.2.c)<br>9. PPK Processing & Geotag 90%(3.6.i)</th>
+                                <th rowspan="2">ORI GSD (IN UAV REPORT) ALLOWED (5 cm)<br><small>(3.5.IV(b))</small></th>
+                                <th rowspan="2">DEM GSD (IN UAV REPORT) ALLOWED (10 cm)</th>
+                                <th colspan="3">Image Processing Check RMSE x, y ≤ 4.085 cm z ≤ 10.204 cm<br><small>(3.5.I or IV(a)) (IN UAV REPORT)</small></th>
+                                <th colspan="3">GCP & Check points Error RMSE x, y ≤ 10 cm z ≤ 20 cm<br><small>3.5.IV(b) (IN UAV REPORT)</small></th>
+                                <th rowspan="2">No Of IBASE</th>
+                                <th colspan="3">Errors in Network adjustment report of ibase in cm (allowed X,Y=2.5 cm Z=5 cm (3.5.II(1))</th>
+                                <th colspan="4">CORS STATIONS<br><small>(CHECK THE CO-ORDINATES OF CORS USED)</small></th>
+                                <th rowspan="2">ORI Pixel size in cm<br><small>(3.2.e/3.3.4)</small></th>
+                                <th rowspan="2">DEM pixel size in cm<br><small>(3.2.e/3.3.5)</small></th>
+                                <th rowspan="2">ORI QUALITY<br>ACCEPTED/REJECTED</th>
+                                <th rowspan="2">OVER ALL QUALITY<br>ACCEPTED/REJECTED</th>
+                                <th rowspan="2">SPOT ERRORS-<br>(ORI-Errors, Report, etc)</th>
+                                <th colspan="3">File Size (GB)</th>
+                                <th rowspan="2">PATH</th>
+                            </tr>
+                            <tr>
+                                <!-- Image Processing RMSE -->
+                                <th>X</th>
+                                <th>Y</th>
+                                <th>Z</th>
+                                <!-- GCP Error RMSE -->
+                                <th>X</th>
+                                <th>Y</th>
+                                <th>Z</th>
+                                <!-- Network Adjustment -->
+                                <th>X</th>
+                                <th>Y</th>
+                                <th>Z</th>
+                                <!-- CORS -->
+                                <th>I</th>
+                                <th>II</th>
+                                <th>III</th>
+                                <th>IV</th>
+                                <!-- File Size -->
+                                <th>ORI<br>GB</th>
+                                <th>DEM<br>GB</th>
+                                <th>RAW IMAGES<br>GB</th>
+                            </tr>
+                        </thead>
+                        <tbody id="villageTableBody">
+                            <!-- Rows will be added dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- FORM ACTIONS -->
+            <section class="form-actions">
+                <button type="button" id="saveData" class="btn btn-success">Save Data</button>
+                <button type="button" id="exportExcel" class="btn btn-info">Export to Excel</button>
+                <button type="button" id="loadData" class="btn btn-warning">Load Saved Data</button>
+                <button type="reset" class="btn btn-danger">Reset Form</button>
+            </section>
+        </form>
+    </div>
+
+    <!-- Check Points Modal -->
+    <div id="checkPointsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Check Points Data</h2>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p><strong>Village:</strong> <span id="modalVillageName"></span></p>
+
+                <div class="form-group">
+                    <label>On Marker (3.2.c)</label>
+                    <select id="onMarker">
+                        <option value="">Select</option>
+                        <option value="Y">Yes</option>
+                        <option value="N">No</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Spatially Well Distributed (3.5.II.3)</label>
+                    <select id="spatiallyDistributed">
+                        <option value="">Select</option>
+                        <option value="Y">Yes</option>
+                        <option value="N">No</option>
+                    </select>
+                </div>
+
+                <h3>Check Points (up to 12)</h3>
+                <div class="checkpoint-controls">
+                    <button type="button" id="addCheckPoint" class="btn btn-primary">+ Add Check Point</button>
+                </div>
+
+                <div id="checkPointsContainer" class="checkpoints-table-wrapper">
+                    <table class="checkpoints-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Check Point Name</th>
+                                <th>H.Dist Error (cm)</th>
+                                <th>Actual Height (m)</th>
+                                <th>Observed Height (m)</th>
+                                <th>Height Error (cm)</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="checkPointsBody">
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" id="saveCheckPoints" class="btn btn-success">Save Check Points</button>
+                    <button type="button" class="close-modal btn btn-secondary">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SheetJS library for Excel export -->
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

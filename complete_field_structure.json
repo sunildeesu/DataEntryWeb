@@ -1,0 +1,32 @@
+{
+  "metadata": [
+    {
+      "field": "Designation",
+      "value": "B R RAJEE"
+    },
+    {
+      "field": "Finished On",
+      "value": "13.01.2025"
+    },
+    {
+      "field": "Fresh Submission / Resubmission",
+      "value": "11.12.2024"
+    },
+    {
+      "field": "Taluk",
+      "value": "TUMAKURU"
+    },
+    {
+      "field": "Name of Empanelled Agency",
+      "value": ""
+    }
+  ],
+  "data_entry_columns": [
+    {
+      "name": "FILE SIZE",
+      "column_index": 37,
+      "type": "text",
+      "subfields": []
+    }
+  ]
+}

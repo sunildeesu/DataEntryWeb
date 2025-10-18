@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Excel Export</title>
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+    <h1>Generating Test Excel File...</h1>
+    <script>
+        // Test data
+        const testData = {
+            metadata: {
+                examinerName: "B R RAJEE",
+                designation: "D/MAN DIV I",
+                commencedOn: "2025-01-13",
+                finishedOn: "2025-01-15",
+                noOfDays: "3",
+                dataReceivedDate: "2024-12-11",
+                district: "TUMAKURU",
+                taluk: "GUBBI",
+                submissionType: "FS-8",
+                hardDiskNo: "AEREO-ADPO253",
+                agency: "AEREO"
+            },
+            villageData: [
+                {
+                    slNo: 1,
+                    tileNo: "J-03",
+                    villageName: "Beluru",
+                    lgdCode: "611918",
+                    area: "2.794876",
+                    talukVillage: "GUBBI",
+                    hobli: "KADABA",
+                    dateOfFlying: "2024-10-09",
+                    noOfFlights: "8",
+                    flyingHeight: "114",
+                    rawImages: "34203",
+                    intraFlightOverlap: "No overlap",
+                    fileNaming: "YES",
+                    gpsProcessing: "YES",
+                    oriGsd: "2.67 cm/pix",
+                    demGsd: "10 cm/pix",
+                    imgProcX: "2.77074",
+                    imgProcY: "2.69318",
+                    imgProcZ: "2.04431",
+                    gcpX: "1.41396",
+                    gcpY: "1.24367",
+                    gcpZ: "4.95964",
+                    noOfIbase: "DB_J-03",
+                    netAdjX: "0.0067",
+                    netAdjY: "0.0046",
+                    netAdjZ: "0.0348",
+                    cors1: "GANDASI",
+                    cors2: "HULIKUNTE",
+                    cors3: "KUNIGAL",
+                    cors4: "MADHUGIRI",
+                    oriPixel: "5",
+                    demPixel: "10.001",
+                    oriQuality: "A",
+                    overallQuality: "A",
+                    spotErrors: "1. Project file with black strips at the middle\n2. Village-Acceptable",
+                    fileSizeOri: "25.5",
+                    fileSizeDem: "12.3",
+                    fileSizeRaw: "150.8",
+                    path: "/data/AEREO/TUMAKURU/GUBBI/Beluru"
+                },
+                {
+                    slNo: 2,
+                    tileNo: "I-03",
+                    villageName: "Chamenahalli",
+                    lgdCode: "611921",
+                    area: "1.382704",
+                    talukVillage: "GUBBI",
+                    hobli: "KADABA",
+                    dateOfFlying: "2024-10-12",
+                    noOfFlights: "5",
+                    flyingHeight: "117",
+                    rawImages: "34203",
+                    intraFlightOverlap: "No overlap",
+                    fileNaming: "Yes",
+                    gpsProcessing: "Yes",
+                    oriGsd: "2.73 cm/pix",
+                    demGsd: "10 cm/pix",
+                    imgProcX: "3.04371",
+                    imgProcY: "3.58482",
+                    imgProcZ: "1.84991",
+                    gcpX: "0.795167",
+                    gcpY: "0.83888",
+                    gcpZ: "1.30433",
+                    noOfIbase: "DB_I_03",
+                    netAdjX: "0.0073",
+                    netAdjY: "0.0049",
+                    netAdjZ: "0.041",
+                    cors1: "GANDASI",
+                    cors2: "KADUR",
+                    cors3: "KUNIGAL",
+                    cors4: "MADHUGIRI",
+                    oriPixel: "4.997",
+                    demPixel: "9.991",
+                    oriQuality: "A",
+                    overallQuality: "A",
+                    spotErrors: "1. CP1 not clear\n2. Drone number is different in DPR and raw images\n3. Village Acceptable",
+                    fileSizeOri: "18.2",
+                    fileSizeDem: "9.1",
+                    fileSizeRaw: "125.4",
+                    path: "/data/AEREO/TUMAKURU/GUBBI/Chamenahalli"
+                },
+                {
+                    slNo: 3,
+                    tileNo: "F-08,E-08",
+                    villageName: "Goragondanahalli",
+                    lgdCode: "610161",
+                    area: "0.681881",
+                    talukVillage: "Chiknayakanahalli",
+                    hobli: "KANDIKERE",
+                    dateOfFlying: "2024-10-04",
+                    noOfFlights: "93",
+                    flyingHeight: "120",
+                    rawImages: "41855",
+                    intraFlightOverlap: "No overlap",
+                    fileNaming: "yes",
+                    gpsProcessing: "yes",
+                    oriGsd: "2.67 cm/pix",
+                    demGsd: "10 cm/pix",
+                    imgProcX: "2.52488",
+                    imgProcY: "2.04222",
+                    imgProcZ: "3.84968",
+                    gcpX: "2.57335",
+                    gcpY: "3.16696",
+                    gcpZ: "4.05216",
+                    noOfIbase: "DB_F_08",
+                    netAdjX: "0.0094",
+                    netAdjY: "0.0071",
+                    netAdjZ: "0.0326",
+                    cors1: "GANDASI",
+                    cors2: "HULIYAR",
+                    cors3: "MADHUGIRI",
+                    cors4: "",
+                    oriPixel: "4.989",
+                    demPixel: "9.978",
+                    oriQuality: "A",
+                    overallQuality: "A",
+                    spotErrors: "1. Distortion at one place at vegetation\n2. Village Acceptable",
+                    fileSizeOri: "15.8",
+                    fileSizeDem: "7.9",
+                    fileSizeRaw: "180.3",
+                    path: "/data/AEREO/TUMAKURU/Chiknayakanahalli/Goragondanahalli"
+                }
+            ]
+        };
+
+        // Create workbook
+        const wb = XLSX.utils.book_new();
+        const entryData = [];
+
+        // Row 0
+        const row0 = new Array(41).fill('');
+        row0[3] = 'NAME OF EXAMINER';
+        row0[4] = testData.metadata.examinerName;
+        row0[8] = 'COMMENCED ON';
+        row0[9] = testData.metadata.commencedOn;
+        row0[11] = 'NO OF DAYS';
+        entryData.push(row0);
+
+        // Row 1
+        const row1 = new Array(41).fill('');
+        row1[3] = 'DESIGNATION';
+        row1[4] = testData.metadata.designation;
+        row1[8] = 'FINISHED ON';
+        row1[9] = testData.metadata.finishedOn;
+        row1[11] = testData.metadata.noOfDays;
+        entryData.push(row1);
+
+        // Row 2 - Empty
+        entryData.push(new Array(41).fill(''));
+
+        // Row 3
+        const row3 = new Array(41).fill('');
+        row3[3] = 'DATA RECEIVED DATE';
+        row3[4] = testData.metadata.dataReceivedDate;
+        row3[6] = 'DISTRICT';
+        row3[7] = testData.metadata.district;
+        row3[9] = 'HARD DISK NO';
+        entryData.push(row3);
+
+        // Row 4
+        const row4 = new Array(41).fill('');
+        row4[3] = 'FRESH SUBMISSION / RESUBMISSION';
+        row4[4] = testData.metadata.submissionType;
+        row4[6] = 'TALUK';
+        row4[7] = testData.metadata.taluk;
+        row4[9] = testData.metadata.hardDiskNo;
+        entryData.push(row4);
+
+        // Row 5
+        const row5 = new Array(41).fill('');
+        row5[3] = 'NAME OF EMPANALLED AGENCY';
+        row5[5] = testData.metadata.agency;
+        entryData.push(row5);
+
+        // Row 6 - Empty
+        entryData.push(new Array(41).fill(''));
+
+        // Row 7
+        const row7 = new Array(41).fill('');
+        row7[37] = 'FILE SIZE';
+        entryData.push(row7);
+
+        // Row 8 - Headers
+        const headers = [
+            'SL No.', 'V', 'Tile No', 'Village Name', 'LGD CODE', 'AREA', 'TALUK', 'HOBLI',
+            'Date of flying', 'No. of flights', 'Flying Height  (in meters)', 'No. of Raw Images',
+            'Intra Flight overlap (52m) \n(3.2.(i).d-WFD)',
+            '1. File naming(3.3.1)\n2. Raw & RINEX Data of Ibase(3.3.2.i) \n3. GPS Log Sheet(3.3.2.ii) \n4. Base line Processing and(3.8.IV)  \n5. Network adjustment Report(3.8.VI) \n6. UAV processing Report(3.3.7) \n7. PPK Rower Raw Data/Flight Log availabe in data(3.3.3)\n8. Projection, Datum(3.3.6)\n9.QA/QC Report(3.4)',
+            '1. GPS instrument Dual frequency(3.2.c) \n2. Nearest 3 CORS Stations\n3. Correct coordinates of CORS(3.6)\n4. Solution fixed for all Baselines(3.5)\n5. Network Adjustment passed for 95% accuracy(3.5.(iii).d)\n6. Geo-tagging done using correct Ibase(3.8.V-WFD)\n7.Check points provided 5 per village(3.5.II.3)\n8. Epoch-allowed 01 sec(3.2.c)\n9. PPK Processing & Geotag 90%(3.6.i)',
+            '',
+            'ORI GSD (IN UAV REPORT)  ALLOWED     (5 cm)\n  (3.5.IV(b))',
+            'DEM GSD (IN UAV REPORT) ALLOWED  (10 cm)',
+            'Image Processing Check RMSE x, y ≤ 4.085 cm z ≤ 10.204 cm \n\n(3.5.I or IV(a))\n(IN UAV REPORT)',
+            'Y', 'Z',
+            'GCP & Check points Error RMSE x, y ≤ 10 cm z ≤ 20 cm \n\n3.5.IV(b)\n(IN UAV REPORT)',
+            'Y', 'Z',
+            'No Of IBASE',
+            'Errors in Network adjustment report of ibase in cm (allowed X,Y=2.5 cm Z=5 cm (3.5.II(1))',
+            'Y', 'Z',
+            'CORS STATIONS\n(CHECK THE CO-ORDINATES OF CORS USED)',
+            'II', 'III', 'IV',
+            'ORI Pixel size in cm (3.2.e/3.3.4)',
+            'DEM pixel size in cm (3.2.e/3.3.5)',
+            'ORI QUALITY ACCEPTED/REJECTED',
+            'OVER ALL QUALITY ACCEPTED/REJECTED',
+            'SPOT ERRORS-(ORI-Errors, Report, etc)',
+            'ORI', 'DEM', 'RAW IMAGES', 'PATH'
+        ];
+        entryData.push(headers);
+
+        // Row 9 - Sub headers
+        const subHeaders = new Array(41).fill('');
+        subHeaders[18] = 'X';
+        subHeaders[19] = 'Y';
+        subHeaders[20] = 'Z';
+        subHeaders[21] = 'X';
+        subHeaders[22] = 'Y';
+        subHeaders[23] = 'Z';
+        subHeaders[24] = 'IBASE';
+        subHeaders[25] = 'X';
+        subHeaders[26] = 'Y';
+        subHeaders[27] = 'Z';
+        subHeaders[28] = 'I';
+        subHeaders[29] = 'II';
+        subHeaders[30] = 'III';
+        subHeaders[31] = 'IV';
+        subHeaders[37] = 'GB';
+        subHeaders[38] = 'GB';
+        subHeaders[39] = 'GB';
+        entryData.push(subHeaders);
+
+        // Data rows
+        testData.villageData.forEach((data) => {
+            const dataRow = new Array(41).fill('');
+            dataRow[0] = data.slNo;
+            dataRow[1] = `V${data.slNo}`;
+            dataRow[2] = data.tileNo;
+            dataRow[3] = data.villageName;
+            dataRow[4] = data.lgdCode;
+            dataRow[5] = data.area;
+            dataRow[6] = data.talukVillage;
+            dataRow[7] = data.hobli;
+            dataRow[8] = data.dateOfFlying;
+            dataRow[9] = data.noOfFlights;
+            dataRow[10] = data.flyingHeight + ' m';
+            dataRow[11] = data.rawImages;
+            dataRow[12] = data.intraFlightOverlap;
+            dataRow[13] = data.fileNaming;
+            dataRow[14] = data.gpsProcessing;
+            dataRow[16] = data.oriGsd;
+            dataRow[17] = data.demGsd;
+            dataRow[18] = data.imgProcX;
+            dataRow[19] = data.imgProcY;
+            dataRow[20] = data.imgProcZ;
+            dataRow[21] = data.gcpX;
+            dataRow[22] = data.gcpY;
+            dataRow[23] = data.gcpZ;
+            dataRow[24] = data.noOfIbase;
+            dataRow[25] = data.netAdjX;
+            dataRow[26] = data.netAdjY;
+            dataRow[27] = data.netAdjZ;
+            dataRow[28] = data.cors1;
+            dataRow[29] = data.cors2;
+            dataRow[30] = data.cors3;
+            dataRow[31] = data.cors4;
+            dataRow[32] = data.oriPixel;
+            dataRow[33] = data.demPixel;
+            dataRow[34] = data.oriQuality;
+            dataRow[35] = data.overallQuality;
+            dataRow[36] = data.spotErrors;
+            dataRow[37] = data.fileSizeOri;
+            dataRow[38] = data.fileSizeDem;
+            dataRow[39] = data.fileSizeRaw;
+            dataRow[40] = data.path;
+            entryData.push(dataRow);
+        });
+
+        // Create worksheet
+        const ws = XLSX.utils.aoa_to_sheet(entryData);
+
+        // Set column widths
+        const colWidths = [
+            {wch: 8}, {wch: 6}, {wch: 12}, {wch: 20}, {wch: 12}, {wch: 12}, {wch: 15}, {wch: 15},
+            {wch: 15}, {wch: 12}, {wch: 18}, {wch: 15}, {wch: 20}, {wch: 20}, {wch: 20}, {wch: 6},
+            {wch: 15}, {wch: 15}, {wch: 10}, {wch: 10}, {wch: 10}, {wch: 10}, {wch: 10}, {wch: 10},
+            {wch: 15}, {wch: 10}, {wch: 10}, {wch: 10}, {wch: 12}, {wch: 12}, {wch: 12}, {wch: 12},
+            {wch: 12}, {wch: 12}, {wch: 15}, {wch: 15}, {wch: 30}, {wch: 10}, {wch: 10}, {wch: 10}, {wch: 20}
+        ];
+        ws['!cols'] = colWidths;
+
+        // Add worksheet to workbook
+        XLSX.utils.book_append_sheet(wb, ws, 'ENTRY');
+
+        // Write file
+        const filename = 'QAQC-FS8-Test_Export_2025-01-18.xlsx';
+        XLSX.writeFile(wb, filename);
+
+        document.body.innerHTML += '<h2 style="color: green;">✅ Excel file generated successfully!</h2>';
+        document.body.innerHTML += '<p>File name: <strong>' + filename + '</strong></p>';
+        document.body.innerHTML += '<p>Check your Downloads folder</p>';
+        document.body.innerHTML += '<h3>Test Data Included:</h3>';
+        document.body.innerHTML += '<ul>';
+        document.body.innerHTML += '<li>Examiner: B R RAJEE</li>';
+        document.body.innerHTML += '<li>District: TUMAKURU</li>';
+        document.body.innerHTML += '<li>Taluk: GUBBI</li>';
+        document.body.innerHTML += '<li>3 Village entries (Beluru, Chamenahalli, Goragondanahalli)</li>';
+        document.body.innerHTML += '<li>All fields populated with realistic data</li>';
+        document.body.innerHTML += '</ul>';
+    </script>
+</body>
+</html>

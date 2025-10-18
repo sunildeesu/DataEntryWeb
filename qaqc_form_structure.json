@@ -1,0 +1,292 @@
+{
+  "form_title": "QA/QC Data Entry - Drone Survey Data",
+  "metadata_sections": {
+    "examiner_info": [
+      {
+        "label": "Name of Examiner",
+        "type": "text",
+        "row": 0,
+        "col": 4
+      },
+      {
+        "label": "Designation",
+        "type": "text",
+        "row": 1,
+        "col": 4
+      }
+    ],
+    "dates": [
+      {
+        "label": "Commenced On",
+        "type": "date",
+        "row": 0,
+        "col": 9
+      },
+      {
+        "label": "Finished On",
+        "type": "date",
+        "row": 1,
+        "col": 9
+      },
+      {
+        "label": "No of Days",
+        "type": "number",
+        "row": 1,
+        "col": 11
+      },
+      {
+        "label": "Data Received Date",
+        "type": "date",
+        "row": 3,
+        "col": 4
+      }
+    ],
+    "location": [
+      {
+        "label": "District",
+        "type": "text",
+        "row": 3,
+        "col": 7
+      },
+      {
+        "label": "Taluk",
+        "type": "text",
+        "row": 4,
+        "col": 7
+      }
+    ],
+    "submission_info": [
+      {
+        "label": "Fresh Submission / Resubmission",
+        "type": "text",
+        "row": 4,
+        "col": 4
+      },
+      {
+        "label": "Hard Disk No",
+        "type": "text",
+        "row": 3,
+        "col": 9
+      },
+      {
+        "label": "Name of Empanelled Agency",
+        "type": "text",
+        "row": 5,
+        "col": 5
+      }
+    ]
+  },
+  "data_table_columns": [
+    {
+      "index": 0,
+      "label": "SL No.",
+      "parent_label": "",
+      "type": "number",
+      "full_label": "SL No."
+    },
+    {
+      "index": 2,
+      "label": "Tile No",
+      "parent_label": "",
+      "type": "number",
+      "full_label": "Tile No"
+    },
+    {
+      "index": 3,
+      "label": "Village Name",
+      "parent_label": "",
+      "type": "text",
+      "full_label": "Village Name"
+    },
+    {
+      "index": 4,
+      "label": "LGD CODE",
+      "parent_label": "",
+      "type": "text",
+      "full_label": "LGD CODE"
+    },
+    {
+      "index": 5,
+      "label": "AREA",
+      "parent_label": "",
+      "type": "text",
+      "full_label": "AREA"
+    },
+    {
+      "index": 6,
+      "label": "TALUK",
+      "parent_label": "",
+      "type": "text",
+      "full_label": "TALUK"
+    },
+    {
+      "index": 7,
+      "label": "HOBLI",
+      "parent_label": "",
+      "type": "text",
+      "full_label": "HOBLI"
+    },
+    {
+      "index": 8,
+      "label": "Date of flying",
+      "parent_label": "",
+      "type": "date",
+      "full_label": "Date of flying"
+    },
+    {
+      "index": 9,
+      "label": "No. of flights",
+      "parent_label": "",
+      "type": "number",
+      "full_label": "No. of flights"
+    },
+    {
+      "index": 10,
+      "label": "Flying Height  (in meters)",
+      "parent_label": "",
+      "type": "number",
+      "full_label": "Flying Height  (in meters)"
+    },
+    {
+      "index": 11,
+      "label": "No. of Raw Images",
+      "parent_label": "",
+      "type": "number",
+      "full_label": "No. of Raw Images"
+    },
+    {
+      "index": 12,
+      "label": "Intra Flight overlap (52m) \n(3.2.(i).d-WFD)",
+      "parent_label": "",
+      "type": "text",
+      "full_label": "Intra Flight overlap (52m) \n(3.2.(i).d-WFD)"
+    },
+    {
+      "index": 13,
+      "label": "1. File naming(3.3.1)\n2. Raw & RINEX Data of Ibase(3.3.2.i) \n3. GPS Log Sheet(3.3.2.ii) \n4. Base line Processing and(3.8.IV)  \n5. Network adjustment Report(3.8.VI) \n6. UAV processing Report(3.3.7) \n7. PPK Rower Raw Data/Flight Log availabe in data(3.3.3)\n8. Projection, Datum(3.3.6)\n9.QA/QC Report(3.4)",
+      "parent_label": "",
+      "type": "text",
+      "full_label": "1. File naming(3.3.1)\n2. Raw & RINEX Data of Ibase(3.3.2.i) \n3. GPS Log Sheet(3.3.2.ii) \n4. Base line Processing and(3.8.IV)  \n5. Network adjustment Report(3.8.VI) \n6. UAV processing Report(3.3.7) \n7. PPK Rower Raw Data/Flight Log availabe in data(3.3.3)\n8. Projection, Datum(3.3.6)\n9.QA/QC Report(3.4)"
+    },
+    {
+      "index": 14,
+      "label": "1. GPS instrument Dual frequency(3.2.c) \n2. Nearest 3 CORS Stations\n3. Correct coordinates of CORS(3.6)\n4. Solution fixed for all Baselines(3.5)\n5. Network Adjustment passed for 95% accuracy(3.5.(iii).d)\n6. Geo-tagging done using correct Ibase(3.8.V-WFD)\n7.Check points provided 5 per village(3.5.II.3)\n8. Epoch-allowed 01 sec(3.2.c)\n9. PPK Processing & Geotag 90%(3.6.i)",
+      "parent_label": "",
+      "type": "text",
+      "full_label": "1. GPS instrument Dual frequency(3.2.c) \n2. Nearest 3 CORS Stations\n3. Correct coordinates of CORS(3.6)\n4. Solution fixed for all Baselines(3.5)\n5. Network Adjustment passed for 95% accuracy(3.5.(iii).d)\n6. Geo-tagging done using correct Ibase(3.8.V-WFD)\n7.Check points provided 5 per village(3.5.II.3)\n8. Epoch-allowed 01 sec(3.2.c)\n9. PPK Processing & Geotag 90%(3.6.i)"
+    },
+    {
+      "index": 16,
+      "label": "ORI GSD (IN UAV REPORT)  ALLOWED     (5 cm)\n  (3.5.IV(b))",
+      "parent_label": "",
+      "type": "text",
+      "full_label": "ORI GSD (IN UAV REPORT)  ALLOWED     (5 cm)\n  (3.5.IV(b))"
+    },
+    {
+      "index": 17,
+      "label": "DEM GSD (IN UAV REPORT) ALLOWED  (10 cm)",
+      "parent_label": "",
+      "type": "text",
+      "full_label": "DEM GSD (IN UAV REPORT) ALLOWED  (10 cm)"
+    },
+    {
+      "index": 18,
+      "label": "Image Processing Check RMSE x, y ≤ 4.085 cm z ≤ 10.204 cm \n\n(3.5.I or IV(a))\n(IN UAV REPORT)",
+      "parent_label": "",
+      "type": "number",
+      "full_label": "Image Processing Check RMSE x, y ≤ 4.085 cm z ≤ 10.204 cm \n\n(3.5.I or IV(a))\n(IN UAV REPORT)"
+    },
+    {
+      "index": 21,
+      "label": "GCP & Check points Error RMSE x, y ≤ 10 cm z ≤ 20 cm \n\n3.5.IV(b)\n(IN UAV REPORT)",
+      "parent_label": "",
+      "type": "number",
+      "full_label": "GCP & Check points Error RMSE x, y ≤ 10 cm z ≤ 20 cm \n\n3.5.IV(b)\n(IN UAV REPORT)"
+    },
+    {
+      "index": 24,
+      "label": "No Of IBASE",
+      "parent_label": "",
+      "type": "number",
+      "full_label": "No Of IBASE"
+    },
+    {
+      "index": 25,
+      "label": "Errors in Network adjustment report of ibase in cm (allowed X,Y=2.5 cm Z=5 cm (3.5.II(1))",
+      "parent_label": "",
+      "type": "number",
+      "full_label": "Errors in Network adjustment report of ibase in cm (allowed X,Y=2.5 cm Z=5 cm (3.5.II(1))"
+    },
+    {
+      "index": 28,
+      "label": "CORS STATIONS\n(CHECK THE CO-ORDINATES OF CORS USED)",
+      "parent_label": "",
+      "type": "text",
+      "full_label": "CORS STATIONS\n(CHECK THE CO-ORDINATES OF CORS USED)"
+    },
+    {
+      "index": 32,
+      "label": "ORI Pixel size in cm (3.2.e/3.3.4)",
+      "parent_label": "",
+      "type": "number",
+      "full_label": "ORI Pixel size in cm (3.2.e/3.3.4)"
+    },
+    {
+      "index": 33,
+      "label": "DEM pixel size in cm (3.2.e/3.3.5)",
+      "parent_label": "",
+      "type": "number",
+      "full_label": "DEM pixel size in cm (3.2.e/3.3.5)"
+    },
+    {
+      "index": 34,
+      "label": "ORI QUALITY ACCEPTED/REJECTED",
+      "parent_label": "",
+      "type": "select",
+      "full_label": "ORI QUALITY ACCEPTED/REJECTED"
+    },
+    {
+      "index": 35,
+      "label": "OVER ALL QUALITY ACCEPTED/REJECTED",
+      "parent_label": "",
+      "type": "select",
+      "full_label": "OVER ALL QUALITY ACCEPTED/REJECTED"
+    },
+    {
+      "index": 36,
+      "label": "SPOT ERRORS-(ORI-Errors, Report, etc)",
+      "parent_label": "",
+      "type": "number",
+      "full_label": "SPOT ERRORS-(ORI-Errors, Report, etc)"
+    },
+    {
+      "index": 37,
+      "label": "ORI",
+      "parent_label": "FILE SIZE",
+      "type": "text",
+      "full_label": "FILE SIZE - ORI"
+    },
+    {
+      "index": 38,
+      "label": "DEM",
+      "parent_label": "",
+      "type": "text",
+      "full_label": "DEM"
+    },
+    {
+      "index": 39,
+      "label": "RAW IMAGES",
+      "parent_label": "",
+      "type": "text",
+      "full_label": "RAW IMAGES"
+    },
+    {
+      "index": 40,
+      "label": "PATH",
+      "parent_label": "",
+      "type": "text",
+      "full_label": "PATH"
+    }
+  ],
+  "total_columns": 30
+}

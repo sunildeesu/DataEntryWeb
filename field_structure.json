@@ -1,0 +1,11 @@
+{
+  "total_fields": 1,
+  "fields": [
+    {
+      "column_index": 37,
+      "main_header": "FILE SIZE",
+      "sub_header": "ORI",
+      "combined": "FILE SIZE - ORI"
+    }
+  ]
+}

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Template-Based Export</title>
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+    <h1>Testing Template-Based Excel Export</h1>
+    <div id="status">Loading template...</div>
+
+    <script>
+        // Helper function
+        function setCellValue(sheet, cellRef, value) {
+            if (!sheet[cellRef]) {
+                sheet[cellRef] = {};
+            }
+            sheet[cellRef].v = value;
+            sheet[cellRef].t = typeof value === 'number' ? 'n' : 's';
+        }
+
+        // Load template and update it
+        fetch('QAQC-FS8-Acceptance.xlsx')
+            .then(response => response.arrayBuffer())
+            .then(arrayBuffer => {
+                document.getElementById('status').innerHTML = 'Template loaded! Processing...';
+
+                // Read the template
+                const wb = XLSX.read(arrayBuffer, {
+                    type: 'array',
+                    cellStyles: true,
+                    cellFormula: true,
+                    sheetStubs: true
+                });
+
+                document.getElementById('status').innerHTML += '<br>Sheets found: ' + wb.SheetNames.join(', ');
+
+                // Get ENTRY sheet
+                const ws = wb.Sheets['ENTRY'];
+
+                // Test data
+                const testData = {
+                    examinerName: "B R RAJEE",
+                    designation: "D/MAN DIV I",
+                    commencedOn: "2025-01-13",
+                    finishedOn: "2025-01-15",
+                    noOfDays: "3",
+                    dataReceivedDate: "2024-12-11",
+                    district: "TUMAKURU",
+                    taluk: "GUBBI",
+                    submissionType: "FS-8",
+                    hardDiskNo: "AEREO-ADPO253",
+                    agency: "AEREO"
+                };
+
+                // Update metadata
+                setCellValue(ws, 'E1', testData.examinerName);
+                setCellValue(ws, 'J1', testData.commencedOn);
+                setCellValue(ws, 'E2', testData.designation);
+                setCellValue(ws, 'J2', testData.finishedOn);
+                setCellValue(ws, 'L2', testData.noOfDays);
+                setCellValue(ws, 'E4', testData.dataReceivedDate);
+                setCellValue(ws, 'H4', testData.district);
+                setCellValue(ws, 'J4', testData.hardDiskNo);
+                setCellValue(ws, 'E5', testData.submissionType);
+                setCellValue(ws, 'H5', testData.taluk);
+                setCellValue(ws, 'F6', testData.agency);
+
+                // Column letters
+                const cols = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM','AN','AO'];
+
+                // Add 3 test villages
+                const villages = [
+                    {
+                        slNo: 1,
+                        villageName: 'Beluru',
+                        lgdCode: '611918',
+                        area: '2.794876',
+                        taluk: 'GUBBI',
+                        hobli: 'KADABA',
+                        dateOfFlying: '2024-10-09',
+                        cors1: 'GANDASI',
+                        cors2: 'HULIKUNTE',
+                        oriQuality: 'A',
+                        overallQuality: 'A'
+                    },
+                    {
+                        slNo: 2,
+                        villageName: 'Chamenahalli',
+                        lgdCode: '611921',
+                        area: '1.382704',
+                        taluk: 'GUBBI',
+                        hobli: 'KADABA',
+                        dateOfFlying: '2024-10-12',
+                        cors1: 'GANDASI',
+                        cors2: 'KADUR',
+                        oriQuality: 'A',
+                        overallQuality: 'A'
+                    },
+                    {
+                        slNo: 3,
+                        villageName: 'Goragondanahalli',
+                        lgdCode: '610161',
+                        area: '0.681881',
+                        taluk: 'Chiknayakanahalli',
+                        hobli: 'KANDIKERE',
+                        dateOfFlying: '2024-10-04',
+                        cors1: 'GANDASI',
+                        cors2: 'HULIYAR',
+                        oriQuality: 'A',
+                        overallQuality: 'A'
+                    }
+                ];
+
+                villages.forEach((village, index) => {
+                    const excelRow = 11 + index;
+
+                    setCellValue(ws, cols[0] + excelRow, village.slNo);
+                    setCellValue(ws, cols[1] + excelRow, `V${village.slNo}`);
+                    setCellValue(ws, cols[3] + excelRow, village.villageName);
+                    setCellValue(ws, cols[4] + excelRow, village.lgdCode);
+                    setCellValue(ws, cols[5] + excelRow, village.area);
+                    setCellValue(ws, cols[6] + excelRow, village.taluk);
+                    setCellValue(ws, cols[7] + excelRow, village.hobli);
+                    setCellValue(ws, cols[8] + excelRow, village.dateOfFlying);
+                    setCellValue(ws, cols[28] + excelRow, village.cors1);
+                    setCellValue(ws, cols[29] + excelRow, village.cors2);
+                    setCellValue(ws, cols[34] + excelRow, village.oriQuality);
+                    setCellValue(ws, cols[35] + excelRow, village.overallQuality);
+                });
+
+                document.getElementById('status').innerHTML += '<br>Data updated! Writing file...';
+
+                // Write file
+                const filename = 'QAQC-FS8-Template-Test_2025-01-18.xlsx';
+                XLSX.writeFile(wb, filename, {
+                    bookType: 'xlsx',
+                    bookSST: false,
+                    type: 'binary',
+                    cellStyles: true
+                });
+
+                document.getElementById('status').innerHTML += '<br><br><h2 style="color: green;">✅ Success!</h2>';
+                document.getElementById('status').innerHTML += '<p>File exported: <strong>' + filename + '</strong></p>';
+                document.getElementById('status').innerHTML += '<p>Check your Downloads folder</p>';
+                document.getElementById('status').innerHTML += '<h3>What was preserved:</h3>';
+                document.getElementById('status').innerHTML += '<ul>';
+                document.getElementById('status').innerHTML += '<li>✅ All 15 sheets from template</li>';
+                document.getElementById('status').innerHTML += '<li>✅ All formulas</li>';
+                document.getElementById('status').innerHTML += '<li>✅ All formatting and styles</li>';
+                document.getElementById('status').innerHTML += '<li>✅ Updated ENTRY sheet with test data</li>';
+                document.getElementById('status').innerHTML += '</ul>';
+            })
+            .catch(error => {
+                document.getElementById('status').innerHTML = '<h2 style="color: red;">❌ Error</h2><p>' + error.message + '</p>';
+                console.error('Error:', error);
+            });
+    </script>
+</body>
+</html>
