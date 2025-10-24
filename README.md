@@ -1,236 +1,118 @@
-# QA/QC Data Entry Webpage - Drone Survey Data
+# QA/QC Data Entry - Drone Survey
 
-A comprehensive web-based data entry form for Quality Assurance and Quality Control (QA/QC) of Drone Survey Data, specifically designed for QAQC-FS8-Acceptance workflows.
+A web-based application for entering and managing QA/QC data for drone surveys with Excel export functionality.
 
 ## Features
 
-### 1. Metadata Management
-- **Examiner Information**: Name and designation
-- **Timeline Tracking**: Commenced date, finished date, and automatic calculation of number of days
-- **Location Details**: District and Taluk information
-- **Submission Information**: Fresh/Resubmission type, Hard Disk number, and Agency details
+- ✅ **41-column village data table** matching Excel template structure
+- ✅ **Real-time threshold validation** (15 different validations)
+- ✅ **Quality field color coding** (Green for Accepted, Red for Rejected)
+- ✅ **Perfect Excel export** - Copies reference file with all formatting, formulas, and sheets intact
+- ✅ **Custom filename selection** for exports
+- ✅ **Undo/Redo** for row operations
+- ✅ **LocalStorage persistence** - Auto-saves every 2 minutes
+- ✅ **Responsive design** with professional styling
 
-### 2. Village Data Entry Table
-Dynamic table with the following fields for each village:
-- Basic Information (SL No., Tile No, Village Name, LGD Code, Area)
-- Location (Taluk, Hobli)
-- Flight Details (Date, Number of flights, Flying height, Raw images count)
-- Quality Checks (Intra-flight overlap, File naming, GPS processing)
-- GSD Measurements (ORI and DEM)
-- RMSE Calculations (Image processing and GCP errors with X, Y, Z coordinates)
-- Network Adjustment (IBASE details and error measurements)
-- CORS Stations (4 station inputs)
-- Pixel Sizes (ORI and DEM)
-- Quality Status (ORI and Overall acceptance/rejection)
-- File Information (Spot errors, file sizes for ORI/DEM/RAW, and path)
+## Quick Start
 
-### 3. Data Management Features
-- **Add/Remove Rows**: Dynamically add or remove village entries
-- **Save Data**: Store form data in browser's localStorage
-- **Load Data**: Retrieve previously saved data
-- **Auto-Save**: Automatic data saving every 2 minutes
-- **Export**: Export data as JSON file for backup
-- **Form Reset**: Clear all data and start fresh
-- **Form Validation**: Required field validation with visual feedback
+### Prerequisites
 
-### 4. User Experience
-- Responsive design that works on desktop and mobile devices
-- Color-coded validation (errors in red, success in green)
-- Toast notifications for user actions
-- Automatic calculation of number of days between dates
-- Sticky table headers for easy navigation
-- Professional gradient design with smooth animations
+- Python 3.x
+- openpyxl library
+
+```bash
+pip3 install openpyxl
+```
+
+### Running the Application
+
+1. **Start the Python server:**
+   ```bash
+   python3 server.py 8001
+   ```
+
+2. **Open in browser:**
+   ```
+   http://localhost:8001/index.html
+   ```
+
+3. **Fill in the form and export:**
+   - Enter examiner information
+   - Add village data entries
+   - Click "Export to Excel"
+   - The exported file will have all 15 sheets with formulas and formatting preserved
 
 ## File Structure
 
 ```
 DataEntryWeb/
-├── index.html              # Main HTML structure
-├── styles.css              # Complete styling and responsive design
-├── script.js               # JavaScript functionality and data handling
-├── QAQC-FS8-Acceptance.xlsx # Reference Excel file
-├── README.md               # This documentation file
-└── Analysis Files (optional)
-    ├── analyze_excel.py
-    ├── detailed_analysis.py
-    ├── final_field_extraction.py
-    └── qaqc_form_structure.json
+├── index.html              # Web form interface
+├── script.js               # Frontend JavaScript (validation, UI logic)
+├── styles.css              # Application styling
+├── server.py               # Python HTTP server (serves app + handles export)
+├── export_excel.py         # Excel export logic using openpyxl
+├── QAQC-FS8-Acceptance.xlsx  # Reference template file
+├── README.md               # This file
+├── README_PYTHON_SERVER.md # Detailed server documentation
+├── QUICKSTART.md           # Quick start guide
+├── LICENSE                 # MIT License
+└── docs_archive/           # Archived documentation and analysis scripts
 ```
 
-## Usage Instructions
+## How Export Works
 
-### Getting Started
+1. **Browser** sends form data to Python server (JSON via HTTP POST)
+2. **Python** copies the reference Excel file (`QAQC-FS8-Acceptance.xlsx`)
+3. **Python** opens the copy with openpyxl (preserves all formatting)
+4. **Python** fills ENTRY sheet with form data
+5. **Python** saves the workbook (all 15 sheets, formulas, formatting intact)
+6. **Browser** downloads the Excel file
 
-1. **Open the Application**
-   - Simply open `index.html` in a modern web browser (Chrome, Firefox, Safari, Edge)
-   - No server or installation required - runs entirely in the browser
+### What Gets Preserved
 
-2. **Fill in Examiner Information**
-   - Enter your name and designation
-   - Select the commenced and finished dates (auto-calculates number of days)
-   - Enter data received date
+✅ All 15 sheets (ENTRY, ANEX-I through ANEX-IV, etc.)
+✅ All 1291+ formulas (ANEX-IV auto-calculates from ENTRY data)
+✅ All formatting (colors, borders, merged cells, conditional formatting)
+✅ All data validations (Y/N dropdowns)
+✅ Column widths, row heights, hidden rows
 
-3. **Enter Location Details**
-   - Fill in District and Taluk information
-   - Specify submission type (e.g., FS-8)
-   - Enter Hard Disk number and Agency name
+## Threshold Validations
 
-4. **Add Village Data**
-   - Click "Add Village Entry" to add a new row
-   - Fill in all required fields for each village
-   - Use the horizontal scroll to access all columns
-   - Click "Remove Last Entry" to delete the last row if needed
+The application validates the following fields in real-time:
 
-5. **Save Your Work**
-   - Click "Save Data" to store your progress in the browser
-   - Data is automatically saved every 2 minutes
-   - Use "Load Saved Data" to retrieve your work later
+| Field | Threshold | Column |
+|-------|-----------|--------|
+| ORI GSD | ≤ 5 cm | Q |
+| DEM GSD | ≤ 10 cm | R |
+| Image Processing X, Y | ≤ 4.085 cm | S, T |
+| Image Processing Z | ≤ 10.204 cm | U |
+| GCP Error X, Y | ≤ 10 cm | V, W |
+| GCP Error Z | ≤ 20 cm | X |
+| Network Adjustment X, Y | ≤ 2.5 cm | Z, AA |
+| Network Adjustment Z | ≤ 5 cm | AB |
+| ORI Pixel | ≤ 5 cm | AG |
+| DEM Pixel | ≤ 10 cm | AH |
 
-6. **Export Data**
-   - Click "Export to Excel" to download your data as a JSON file
-   - The file can be imported later or processed by other tools
+Fields exceeding thresholds are highlighted in red.
 
-### Field Descriptions
+## Browser Compatibility
 
-#### Required Fields (marked with *)
-- Name of Examiner
-- Designation
-- Commenced On
-- Finished On
-- Data Received Date
-- District
-- Taluk
-- Fresh Submission / Resubmission
-- Hard Disk No
-- Name of Empanelled Agency
-
-#### Village Entry Fields
-
-**Basic Information:**
-- **SL No.**: Auto-numbered serial number
-- **Tile No**: Survey tile identifier (e.g., J-03, I-03)
-- **Village Name**: Name of the village
-- **LGD CODE**: Local Government Directory code
-- **Area**: Area in square kilometers
-
-**Flight Information:**
-- **Date of Flying**: Date when the drone survey was conducted
-- **No. of Flights**: Number of flight missions
-- **Flying Height**: Altitude in meters
-- **No. of Raw Images**: Total raw images captured
-
-**Quality Checks:**
-- **Intra Flight Overlap**: Whether overlap criterion (52m) is met
-- **File Naming & Data**: Compliance with naming conventions and data requirements (3.3.1-3.4)
-- **GPS & Processing**: GPS instrument and processing compliance (3.2.c-3.6.i)
-
-**GSD (Ground Sample Distance):**
-- **ORI GSD**: Orthophoto GSD (should be ≤5 cm)
-- **DEM GSD**: Digital Elevation Model GSD (should be ≤10 cm)
-
-**RMSE (Root Mean Square Error):**
-- **Image Processing**: X, Y (≤4.085 cm), Z (≤10.204 cm)
-- **GCP Error**: X, Y (≤10 cm), Z (≤20 cm)
-
-**Network Adjustment:**
-- **No. of IBASE**: Number of base stations
-- **Error Values**: X, Y (≤2.5 cm), Z (≤5 cm)
-
-**CORS Stations:**
-- Four CORS (Continuously Operating Reference Station) identifiers
-
-**Pixel Sizes:**
-- **ORI**: Orthophoto pixel size in cm
-- **DEM**: DEM pixel size in cm
-
-**Quality Status:**
-- **ORI Quality**: Accepted (A) or Rejected (R)
-- **Overall Quality**: Final acceptance status
-
-**File Information:**
-- **Spot Errors**: Notes on any errors or issues found
-- **File Sizes**: ORI, DEM, and RAW data sizes in GB
-- **Path**: File path location
-
-## Technical Details
-
-### Browser Compatibility
-- Chrome 90+
-- Firefox 88+
-- Safari 14+
-- Edge 90+
-
-### Data Storage
-- Uses browser's localStorage for data persistence
-- Data survives page refreshes but is browser-specific
-- Export to JSON for cross-browser/device compatibility
-
-### Validation
-- Real-time validation on required fields
-- Date range validation for timeline fields
-- Numeric validation for measurement fields
-- Visual feedback with color coding
-
-### Responsive Design
-- Desktop-optimized for data entry
-- Mobile-friendly with horizontal scrolling for table
-- Adapts to different screen sizes automatically
-
-## Data Flow
-
-Based on the QAQC-FS8-Acceptance.xlsx file structure:
-
-1. **Header Section** (Rows 0-6): Metadata fields
-2. **Column Headers** (Rows 7-8): Field definitions with parent/child relationships
-3. **Data Rows** (Row 9+): Individual village entries
-
-The form replicates this structure while providing an enhanced user interface for data entry.
-
-## Keyboard Shortcuts
-
-- **Tab**: Navigate between fields
-- **Shift + Tab**: Navigate backwards
-- **Enter**: Submit form (when focused on buttons)
-- **Ctrl/Cmd + S**: Could be implemented for quick save
-
-## Tips for Best Use
-
-1. **Regular Saving**: Although auto-save is enabled, manually save important data
-2. **Export Backups**: Regularly export data as JSON files for backup
-3. **Fill Systematically**: Complete one village entry fully before moving to the next
-4. **Validate as You Go**: Check quality status fields (Accepted/Rejected) carefully
-5. **Use Placeholders**: Refer to placeholder text for format examples
-
-## Future Enhancements
-
-Potential improvements that could be added:
-
-- Direct Excel export using libraries like SheetJS (xlsx)
-- Database integration for multi-user access
-- Import from CSV/Excel files
-- Advanced validation rules based on QA/QC standards
-- Comparison with acceptance criteria
-- Report generation
-- Cloud storage integration
-- User authentication and role-based access
-
-## Support
-
-For issues or questions:
-1. Check that all required fields are filled
-2. Verify date formats are correct
-3. Ensure numeric fields contain valid numbers
-4. Clear browser cache if experiencing issues
-5. Try a different browser if problems persist
+- Chrome (Recommended)
+- Firefox
+- Safari
+- Edge
 
 ## License
 
-This tool is designed for internal QA/QC processes for drone survey data management.
+MIT License - See [LICENSE](LICENSE) file for details.
 
-## Version
+## Support
 
-Version 1.0 - Initial Release (January 2025)
+For detailed server documentation, see [README_PYTHON_SERVER.md](README_PYTHON_SERVER.md)
 
 ---
 
-**Note**: This form is based on the QAQC-FS8-Acceptance.xlsx structure and includes all fields identified in the analysis. The form structure follows the same validation criteria and field requirements as specified in the Excel template.
+**Built with:**
+- HTML5, CSS3, JavaScript (ES6)
+- Python 3
+- openpyxl library

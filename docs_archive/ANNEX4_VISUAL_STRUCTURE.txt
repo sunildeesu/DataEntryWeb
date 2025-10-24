@@ -1,0 +1,275 @@
+================================================================================
+ANEX-IV SHEET - VISUAL STRUCTURE MAP
+================================================================================
+
+ROW 1 - HEADER (Merged A1:P1)
+================================================================================
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ A1:P1 MERGED - "Horizontal ORI Accuracy and Vertical DEM Accuracy..."      │
+│ Background: #C6D9F0 (Light Blue) | Font: Arial 14pt Bold | Center Aligned  │
+│ Border: Medium on all sides | Wrap Text: Yes                               │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+ROWS 2-4 - METADATA SECTION
+================================================================================
+Row 2:
+┌──────────────┬──────────────┬────────────┬──────────────────┬──────────────┐
+│ A2:B2 MERGED │ C2:D2 MERGED │            │ E2:G2 MERGED     │ H2:J2 MERGED │
+│ "DATA        │ =ENTRY!E5    │            │ "HARD DISK NO."  │ =ENTRY!J6    │
+│  RECEIVED    │ (Orange)     │            │ (Yellow)         │ (Orange)     │
+│  DATE"       │ Center       │            │ Right            │ Center       │
+│ (Yellow)     │              │            │                  │              │
+│ Right        │              │            │                  │              │
+└──────────────┴──────────────┴────────────┴──────────────────┴──────────────┘
+
+Row 3:
+┌──────────────────────────────┬──────────────────────────┬─────────────────┐
+│ A3:C3 MERGED                 │ D3:F3 MERGED             │ G3-J3 (Empty)   │
+│ "NAME OF EMPANALLED AGENCY"  │ =ENTRY!F7                │ Bold, Center    │
+│ (Yellow) Right, Bold         │ (Yellow) Center, Bold    │                 │
+└──────────────────────────────┴──────────────────────────┴─────────────────┘
+
+Row 4:
+┌────────┬──────────────────┬─────────────┬──────┬──────┬──────┬─────┬─────┐
+│ A4     │ B4:C4 MERGED     │ D4          │ E4   │ F4   │ G4   │ ... │ P4  │
+│ "SL NO"│ "VILLAGE         │ =ENTRY!E6   │ 1.0  │ 2.0  │ 3.0  │ ... │ 12.0│
+│ Yellow │  NAME_LGD CODE"  │ Yellow,Bold │Yellow│Yellow│Yellow│     │     │
+│ Center │ Yellow, Center   │ Center      │Center│Center│Center│     │     │
+└────────┴──────────────────┴─────────────┴──────┴──────┴──────┴─────┴─────┘
+
+VILLAGE DATA BLOCK PATTERN (Repeats 7 times)
+================================================================================
+
+VILLAGE 1 - Rows 5-9:
+┌────────┬──────────────────┬──────────────┬────────────────────────────────┐
+│        │                  │              │ E     F     G     H   ...   P  │
+├────────┼──────────────────┼──────────────┼────────────────────────────────┤
+│ A5:A9  │ B5:C7 MERGED     │ D5           │ Check Point IDs                │
+│ MERGED │ =CONCATENATE     │ "Check       │ 611918  611918  611918  ...    │
+│        │ (ENTRY!D11,"-",  │  points      │ _BELURU _BELURU _BELURU        │
+│  1.0   │  ENTRY!E11)      │  Name"       │ _CP_1   _CP_2   _CP_3   ...    │
+│        │                  │ (Yellow)     │ Center  Center  Center         │
+│ Center │ BELURU-611918    │              │                                │
+│        │ Center           │              │                                │
+├────────┤                  ├──────────────┼────────────────────────────────┤
+│        │                  │ D6           │ Horizontal Distance Errors     │
+│        │                  │ "H.Dist      │ 7.573   2.853   2.458   1.214  │
+│        │                  │  Error"      │ (Numeric values)               │
+│        │                  │ (Yellow*)    │                                │
+├────────┤                  ├──────────────┼────────────────────────────────┤
+│        │                  │ D7           │ Actual Height Values           │
+│        │                  │ "Actual      │ 675.596 682.558 687.909 686.721│
+│        │                  │  height"     │ (Numeric, Right-aligned)       │
+│        │                  │ (Yellow)     │                                │
+├────────┼──────────────────┼──────────────┼────────────────────────────────┤
+│        │ B8:C9 MERGED     │ D8           │ Observed Height Values         │
+│        │ "1.On Marker     │ "Observed    │ 675.597 682.562 687.909 686.727│
+│        │  (3.2.c) (Y/N)"  │  height"     │ (Numeric, Right-aligned)       │
+│        │ (Yellow)         │ (Yellow)     │                                │
+│        │ with C8/C9       │              │                                │
+│        │ Validation: Y/N  │              │                                │
+├────────┤                  ├──────────────┼────────────────────────────────┤
+│        │ "2.Spatially     │ D9           │ Error Formulas                 │
+│        │  Well Distributed│ "Height      │ =(E7-   =(F7-   =(G7-   =(H7- │
+│        │  (3.5.(II).3)    │  Error"      │  E8)*   F8)*    G8)*    H8)*  │
+│        │  (Y/N)"          │ (Special*)   │  100    100     100     100   │
+│        │ with C9          │              │ (Formula cells)                │
+│        │ Validation: Y/N  │              │                                │
+└────────┴──────────────────┴──────────────┴────────────────────────────────┘
+
+Row Heights: Row 6-9 = 24.00 points
+
+VILLAGE 2 - Rows 10-14:
+(Same pattern as Village 1, but references ENTRY!D12, ENTRY!E12)
+A10:A14 merged = "2.0"
+B10:C12 merged = Village name formula
+B13:C14 merged = Validation questions
+D10-P10 = Check point data
+D11-P11 = H.Dist Error
+D12-P12 = Actual height
+D13-P13 = Observed height
+D14-P14 = Error formulas
+
+VILLAGE 3 - Rows 15-19:
+(Same pattern, references ENTRY!D13, ENTRY!E13)
+A15:A19 merged = "3.0"
+...
+
+VILLAGE 4 - Rows 20-24:
+(Same pattern, references ENTRY!D14, ENTRY!E14)
+A20:A24 merged = "4.0"
+...
+
+VILLAGE 5 - Rows 25-29:
+(Same pattern, references ENTRY!D15, ENTRY!E15)
+A25:A29 merged = "5.0"
+...
+
+VILLAGE 6 - Rows 30-34:
+(Same pattern, references ENTRY!D16, ENTRY!E16)
+A30:A34 merged = "6.0"
+...
+
+VILLAGE 7 - Rows 35-39:
+(Same pattern, references ENTRY!D17, ENTRY!E17)
+A35:A39 merged = "7.0"
+...
+
+FOOTER SECTION - Rows 40-42
+================================================================================
+(Merged cells for signatures/notes - structure varies)
+
+================================================================================
+COLUMN SPECIFICATIONS
+================================================================================
+Col A: Width 9.29  - Serial Number (merged 5 rows per village)
+Col B: Width 20.29 - Village Name part 1 (merged with C)
+Col C: Width 3.29  - Village Name part 2 / Validation column
+Col D: Width 15.43 - Field Labels (Check points, H.Dist, Actual, Observed, Error)
+Col E: Width 8.00  - Check Point 1 data
+Col F-P: Default  - Check Points 2-12 data
+
+================================================================================
+COLOR LEGEND
+================================================================================
+#C6D9F0 - Light Blue    - Main header (A1)
+#FFFFCC - Yellow        - Static labels (A2, A3, E2, D3, A4, etc.)
+#FFCC99 - Light Orange  - Dynamic metadata values (C2, H2)
+#EAF1DD - Light Green   - Data present (Conditional Formatting)
+#FBD4B4 - Light Orange  - Missing data warning (Conditional Formatting)
+#92CDDC - Light Blue    - Observation data (Conditional Formatting)
+#92D050 - Green         - Good error values (Conditional Formatting)
+#FF0000 - Red           - Bad error values (Conditional Formatting)
+
+================================================================================
+DATA VALIDATION
+================================================================================
+Cells with Y/N Dropdown:
+- C8, C9 (Village 1)
+- C13, C14 (Village 2)
+- C18, C19 (Village 3)
+- C23, C24 (Village 4)
+- C28, C29 (Village 5)
+- C33, C34 (Village 6)
+- C38, C39 (Village 7)
+
+Formula: "Y,N"
+Allow Blank: True
+Show Dropdown: False
+
+================================================================================
+CONDITIONAL FORMATTING RULES SUMMARY
+================================================================================
+
+Rule Set 1 - Error Threshold Check (±10cm):
+  Range: E11:J11, E16:J16
+  Green if -10 to 10, Red if outside
+
+Rule Set 2 - Data Entry Highlighting:
+  Range: E5:P5, E10:P10, E15:J15, E20:P20, E25:P25, L30:P30, L35:P35
+  Light green (#EAF1DD) if not blank
+
+Rule Set 3 - Blank Warning:
+  Range: E6:P6, E21:P21, E26:P26, E31:P31, E36:P36
+  Light orange (#FBD4B4) if blank
+  Plus: Green/Red for ±10cm threshold
+
+Rule Set 4 - Observation Highlighting:
+  Range: E7:P8, E12:P13, E17:P18, E22:P23, J27:P28, L32:P33, L37:P38
+  Light blue (#92CDDC) if not blank
+
+Rule Set 5 - Error Calculation Highlighting (±20cm):
+  Range: E9:P9, E14:P14, E19:P19, E24:P24, E29:P29, E34:P34, E39:P39
+  Green (#92D050) if -20 to 20
+  Red (#FF0000) if outside
+
+Rule Set 6 & 7 - Extended Blank Checks:
+  Range: E11:P11, E16:P16, K11:P16
+  Orange if blank, Green/Red for error thresholds
+
+================================================================================
+KEY FORMULAS
+================================================================================
+
+Metadata:
+  C2 = =ENTRY!E5         (Commenced date)
+  H2 = =ENTRY!J6         (Hard disk number)
+  D3 = =ENTRY!F7         (Agency name)
+  D4 = =ENTRY!E6         (District/Taluk)
+
+Village Names (Pattern):
+  B5  = =CONCATENATE(ENTRY!D11,"-",ENTRY!E11)  (Village 1)
+  B10 = =CONCATENATE(ENTRY!D12,"-",ENTRY!E12)  (Village 2)
+  B15 = =CONCATENATE(ENTRY!D13,"-",ENTRY!E13)  (Village 3)
+  B20 = =CONCATENATE(ENTRY!D14,"-",ENTRY!E14)  (Village 4)
+  B25 = =CONCATENATE(ENTRY!D15,"-",ENTRY!E15)  (Village 5)
+  B30 = =CONCATENATE(ENTRY!D16,"-",ENTRY!E16)  (Village 6)
+  B35 = =CONCATENATE(ENTRY!D17,"-",ENTRY!E17)  (Village 7)
+
+Height Error Calculations (Pattern for each village):
+  E9  = =(E7-E8)*100     (Village 1, Check Point 1)
+  F9  = =(F7-F8)*100     (Village 1, Check Point 2)
+  ...through...
+  P9  = =(P7-P8)*100     (Village 1, Check Point 12)
+
+  E14 = =(E12-E13)*100   (Village 2, Check Point 1)
+  ...and so on for each village...
+
+Formula Purpose: Calculate height error in centimeters
+  Error (cm) = (Actual Height - Observed Height) × 100
+
+================================================================================
+CRITICAL PRESERVATION CHECKLIST
+================================================================================
+When exporting data programmatically, you MUST preserve:
+
+☑ Header Formatting
+  □ Merge A1:P1
+  □ Background #C6D9F0
+  □ Font: Arial 14pt Bold
+  □ Center alignment
+  □ Medium borders
+  □ Wrap text
+
+☑ Metadata Section
+  □ All merged cells (9 ranges in rows 2-4)
+  □ Yellow backgrounds on labels
+  □ Orange backgrounds on value cells
+  □ Formulas (not values!) in C2, H2, D3, D4
+
+☑ Village Data Blocks (×7)
+  □ Serial number merge (5 rows)
+  □ Village name merge (3 rows)
+  □ Validation text merge (2 rows, overlapping)
+  □ Yellow backgrounds on Column D labels
+  □ Row heights: 24.00 for rows 6-9 of each block
+  □ Village name formulas (B5, B10, B15, B20, B25, B30, B35)
+  □ Error calculation formulas (rows 9, 14, 19, 24, 29, 34, 39)
+
+☑ Column Widths
+  □ A: 9.29
+  □ B: 20.29
+  □ C: 3.29
+  □ D: 15.43
+  □ E: 8.00
+
+☑ Data Validations
+  □ Y/N dropdowns on 14 cells (7 villages × 2 questions)
+  □ AllowBlank = True
+  □ ShowDropdown = False
+
+☑ Conditional Formatting
+  □ All 7 rule sets with exact colors
+  □ Correct formulas and ranges
+  □ Proper operator (between, notBetween, etc.)
+
+☑ Alignment
+  □ Center: A1, A4-P4, A5-A39, B5-C39, E5-P39
+  □ Right: A2, A3, E2, E7-P8
+  □ All others: General/Default
+
+☑ Borders
+  □ Medium border on A1 (all sides)
+  □ Other borders as per original
+
+================================================================================

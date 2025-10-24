@@ -1,0 +1,98 @@
+
+============================================================
+🚀 QA/QC Data Entry Server Started
+============================================================
+📍 Server running at: http://localhost:8001
+📄 Open: http://localhost:8001/index.html
+🛑 Press Ctrl+C to stop the server
+============================================================
+
+
+============================================================
+📥 Export request received
+============================================================
+📄 Copying reference file: /Users/sunildeesu/myProjects/Hemanth/DataEntryWeb/QAQC-FS8-Acceptance.xlsx
+✓ Reference file copied to: /Users/sunildeesu/myProjects/Hemanth/DataEntryWeb/SunilTest7.xlsx
+📝 Opening workbook to fill data...
+✓ Workbook loaded with 15 sheets
+   Sheets: ENTRY, Sheet3, ANEX-I, ANEX-II, ANX-III, ANEX-IV, ANEX-IV -print, PRINT, ACCEPTED, REJECTED, Sheet1, AC-ENTRY SCREEN, AC-CERTIFICATE, FOR ACRCIVAL, Sheet2
+✓ ENTRY sheet found - filling metadata...
+DEBUG - Received metadata:
+   commencedOn raw value: '2025-10-15'
+   finishedOn raw value: '2025-10-22'
+   Parsed commencedOn: '2025-10-15 00:00:00' (type: datetime)
+   Writing to E2: 'BALASWAMY Y'
+   Writing to J2: '2025-10-15 00:00:00'
+   Verification - E2 value: 'BALASWAMY Y'
+   Verification - J2 value: '2025-10-15 00:00:00'
+✓ Metadata filled successfully
+   - Examiner Name at E2
+   - Designation at E3
+   - Data Received Date at E5
+   - Submission Type at E6
+   - Agency at F7
+✓ Filling village data...
+   Data will start at row 11 (after header row 9 and empty row 10)
+   ✓ Village 1 data filled at row 11
+✓ All village data filled (1 villages)
+💾 Saving workbook...
+═══════════════════════════════════════════════════════
+✅ EXPORT COMPLETED SUCCESSFULLY!
+═══════════════════════════════════════════════════════
+📄 Output file: /Users/sunildeesu/myProjects/Hemanth/DataEntryWeb/SunilTest7.xlsx
+📋 Total sheets: 15
+👥 Villages exported: 1
+✓ All formulas preserved (ANEX-IV will auto-calculate)
+✓ All formatting preserved (colors, borders, merges)
+✓ All 15 sheets intact
+═══════════════════════════════════════════════════════
+127.0.0.1 - - [22/Oct/2025 08:43:55] "POST /export HTTP/1.1" 200 -
+
+✅ File sent to browser successfully!
+============================================================
+
+
+============================================================
+📥 Export request received
+============================================================
+📄 Copying reference file: /Users/sunildeesu/myProjects/Hemanth/DataEntryWeb/QAQC-FS8-Acceptance.xlsx
+✓ Reference file copied to: /Users/sunildeesu/myProjects/Hemanth/DataEntryWeb/SunilTest8.xlsx
+📝 Opening workbook to fill data...
+✓ Workbook loaded with 15 sheets
+   Sheets: ENTRY, Sheet3, ANEX-I, ANEX-II, ANX-III, ANEX-IV, ANEX-IV -print, PRINT, ACCEPTED, REJECTED, Sheet1, AC-ENTRY SCREEN, AC-CERTIFICATE, FOR ACRCIVAL, Sheet2
+✓ ENTRY sheet found - filling metadata...
+DEBUG - Received metadata:
+   commencedOn raw value: '2025-10-15'
+   finishedOn raw value: '2025-10-22'
+   Parsed commencedOn: '2025-10-15 00:00:00' (type: datetime)
+   Writing to E2: 'BALASWAMY Y'
+   Writing to J2: '2025-10-15 00:00:00'
+   Verification - E2 value: 'BALASWAMY Y'
+   Verification - J2 value: '2025-10-15 00:00:00'
+✓ Metadata filled successfully
+   - Examiner Name at E2
+   - Designation at E3
+   - Data Received Date at E5
+   - Submission Type at E6
+   - Agency at F7
+✓ Filling village data...
+   Data will start at row 11 (after header row 9 and empty row 10)
+   ✓ Village 1 data filled at row 11
+✓ All village data filled (1 villages)
+💾 Saving workbook...
+═══════════════════════════════════════════════════════
+✅ EXPORT COMPLETED SUCCESSFULLY!
+═══════════════════════════════════════════════════════
+📄 Output file: /Users/sunildeesu/myProjects/Hemanth/DataEntryWeb/SunilTest8.xlsx
+📋 Total sheets: 15
+👥 Villages exported: 1
+✓ All formulas preserved (ANEX-IV will auto-calculate)
+✓ All formatting preserved (colors, borders, merges)
+✓ All 15 sheets intact
+═══════════════════════════════════════════════════════
+127.0.0.1 - - [22/Oct/2025 08:47:38] "POST /export HTTP/1.1" 200 -
+
+✅ File sent to browser successfully!
+============================================================
+
+127.0.0.1 - - [22/Oct/2025 08:48:25] "GET /index.html HTTP/1.1" 200 -

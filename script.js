@@ -37,6 +37,24 @@ function setupEventListeners() {
     document.getElementById('exportExcel').addEventListener('click', exportToExcel);
     document.getElementById('loadData').addEventListener('click', loadFormData);
 
+    // Modal listeners
+    document.getElementById('addCheckPoint').addEventListener('click', addCheckPoint);
+    document.getElementById('saveCheckPoints').addEventListener('click', saveCheckPoints);
+
+    // Close modal listeners
+    const closeButtons = document.querySelectorAll('.close-modal');
+    closeButtons.forEach(btn => {
+        btn.addEventListener('click', closeCheckPointsModal);
+    });
+
+    // Close modal when clicking outside
+    window.addEventListener('click', function(e) {
+        const modal = document.getElementById('checkPointsModal');
+        if (e.target === modal) {
+            closeCheckPointsModal();
+        }
+    });
+
     // Form reset listener
     document.getElementById('qaqcForm').addEventListener('reset', function(e) {
         if (!confirm('Are you sure you want to reset the entire form? All data will be lost.')) {
@@ -46,6 +64,7 @@ function setupEventListeners() {
                 villageEntries = [];
                 rowCounter = 0;
                 deletedRows = [];
+                checkPointsData = {}; // Clear check points data
                 document.getElementById('villageTableBody').innerHTML = '';
                 document.getElementById('undoRemove').disabled = true;
                 addInitialRow();
@@ -121,6 +140,7 @@ function addVillageRow() {
         <td><input type="number" step="0.001" name="fileSizeDem_${rowCounter}" placeholder="DEM GB"></td>
         <td><input type="number" step="0.001" name="fileSizeRaw_${rowCounter}" placeholder="RAW GB"></td>
         <td><input type="text" name="path_${rowCounter}" placeholder="File path"></td>
+        <td><button type="button" class="btn btn-info btn-sm" onclick="openCheckPointsModal(${rowCounter})">📍 Check Points</button></td>
     `;
 
     tbody.appendChild(row);
@@ -538,18 +558,10 @@ function loadFormData() {
     }
 }
 
-// Export to Excel in QAQC-FS8-Acceptance format
+// Export to Excel in QAQC-FS8-Acceptance format using Python backend
 function exportToExcel() {
     try {
         console.log('Export to Excel started...');
-
-        if (!window.XLSX) {
-            console.error('XLSX library not found');
-            showToast('Excel library not loaded. Please refresh the page.', 'error');
-            return;
-        }
-
-        console.log('XLSX library loaded successfully');
 
         // Validate form first
         if (!validateForm()) {
@@ -584,285 +596,117 @@ function exportToExcel() {
         const sanitizedFilename = customFilename.trim().replace(/[<>:"/\\|?*]/g, '_') || defaultFilename;
 
         console.log('Export filename:', sanitizedFilename);
-        showToast('Loading reference template...', 'info');
+        showToast('Preparing data for export...', 'info');
 
-        // Load the reference Excel file as a template
-        fetch('QAQC-FS8-Acceptance.xlsx')
-            .then(response => {
-                console.log('Fetch response:', response.status);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.arrayBuffer();
-            })
-            .then(arrayBuffer => {
-                console.log('Template loaded, size:', arrayBuffer.byteLength);
-                processExcelExport(arrayBuffer, sanitizedFilename);
-            })
-            .catch(error => {
-                console.error('Error loading reference file:', error);
-                showToast('Error loading reference template: ' + error.message, 'error');
-                // Fallback to basic export
-                exportBasicExcel(sanitizedFilename);
-            });
+        // Prepare data for export
+        const formData = {
+            metadata: {
+                examinerName: document.getElementById('examinerName').value,
+                designation: document.getElementById('designation').value,
+                commencedOn: document.getElementById('commencedOn').value,
+                finishedOn: document.getElementById('finishedOn').value,
+                noOfDays: document.getElementById('noOfDays').value,
+                dataReceivedDate: document.getElementById('dataReceivedDate').value,
+                district: document.getElementById('district').value,
+                taluk: document.getElementById('taluk').value,
+                submissionType: document.getElementById('submissionType').value,
+                hardDiskNo: document.getElementById('hardDiskNo').value,
+                agency: document.getElementById('agency').value
+            },
+            villageData: [],
+            checkPointsData: checkPointsData,  // Include check points data for ANEX-IV
+            filename: sanitizedFilename
+        };
+
+        // Collect village data
+        const tbody = document.getElementById('villageTableBody');
+        const rows = tbody.querySelectorAll('tr');
+
+        rows.forEach((row, index) => {
+            const rowId = index + 1;
+            const rowData = {
+                slNo: rowId,
+                tileNo: getInputValue(row, `tileNo_${rowId}`),
+                villageName: getInputValue(row, `villageName_${rowId}`),
+                lgdCode: getInputValue(row, `lgdCode_${rowId}`),
+                area: getInputValue(row, `area_${rowId}`),
+                talukVillage: getInputValue(row, `talukVillage_${rowId}`),
+                hobli: getInputValue(row, `hobli_${rowId}`),
+                dateOfFlying: getInputValue(row, `dateOfFlying_${rowId}`),
+                noOfFlights: getInputValue(row, `noOfFlights_${rowId}`),
+                flyingHeight: getInputValue(row, `flyingHeight_${rowId}`),
+                rawImages: getInputValue(row, `rawImages_${rowId}`),
+                intraFlightOverlap: getInputValue(row, `intraFlightOverlap_${rowId}`),
+                fileNaming: getInputValue(row, `fileNaming_${rowId}`),
+                gpsProcessing: getInputValue(row, `gpsProcessing_${rowId}`),
+                oriGsd: getInputValue(row, `oriGsd_${rowId}`),
+                demGsd: getInputValue(row, `demGsd_${rowId}`),
+                imgProcX: getInputValue(row, `imgProcX_${rowId}`),
+                imgProcY: getInputValue(row, `imgProcY_${rowId}`),
+                imgProcZ: getInputValue(row, `imgProcZ_${rowId}`),
+                gcpX: getInputValue(row, `gcpX_${rowId}`),
+                gcpY: getInputValue(row, `gcpY_${rowId}`),
+                gcpZ: getInputValue(row, `gcpZ_${rowId}`),
+                noOfIbase: getInputValue(row, `noOfIbase_${rowId}`),
+                netAdjX: getInputValue(row, `netAdjX_${rowId}`),
+                netAdjY: getInputValue(row, `netAdjY_${rowId}`),
+                netAdjZ: getInputValue(row, `netAdjZ_${rowId}`),
+                cors1: getInputValue(row, `cors1_${rowId}`),
+                cors2: getInputValue(row, `cors2_${rowId}`),
+                cors3: getInputValue(row, `cors3_${rowId}`),
+                cors4: getInputValue(row, `cors4_${rowId}`),
+                oriPixel: getInputValue(row, `oriPixel_${rowId}`),
+                demPixel: getInputValue(row, `demPixel_${rowId}`),
+                oriQuality: getInputValue(row, `oriQuality_${rowId}`),
+                overallQuality: getInputValue(row, `overallQuality_${rowId}`),
+                spotErrors: getInputValue(row, `spotErrors_${rowId}`),
+                fileSizeOri: getInputValue(row, `fileSizeOri_${rowId}`),
+                fileSizeDem: getInputValue(row, `fileSizeDem_${rowId}`),
+                fileSizeRaw: getInputValue(row, `fileSizeRaw_${rowId}`),
+                path: getInputValue(row, `path_${rowId}`)
+            };
+            formData.villageData.push(rowData);
+        });
+
+        console.log('Data prepared, sending to Python backend...');
+        showToast('Creating Excel file with Python...', 'info');
+
+        // Send to Python backend (port 8001)
+        fetch('http://localhost:8001/export', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Server error: ${response.status}`);
+            }
+            return response.blob();
+        })
+        .then(blob => {
+            // Download the file
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${sanitizedFilename}.xlsx`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+
+            console.log('File downloaded successfully');
+            showToast('Excel file exported successfully with all formatting!', 'success');
+        })
+        .catch(error => {
+            console.error('Error exporting to Excel:', error);
+            showToast('Error: ' + error.message + '. Make sure Python server is running!', 'error');
+        });
 
     } catch (error) {
         console.error('Error exporting to Excel:', error);
         showToast('Error exporting to Excel: ' + error.message, 'error');
-    }
-}
-
-// Process Excel export with template
-function processExcelExport(templateBuffer, customFilename) {
-    try {
-        console.log('Processing Excel export...');
-
-        // Read the template workbook
-        const wb = XLSX.read(templateBuffer, {
-            type: 'array',
-            cellStyles: true,
-            cellFormula: true,
-            sheetStubs: true
-        });
-
-        console.log('Workbook loaded, sheets:', wb.SheetNames);
-
-        // Get the ENTRY sheet
-        const ws = wb.Sheets['ENTRY'];
-
-        if (!ws) {
-            throw new Error('ENTRY sheet not found in template');
-        }
-
-        console.log('ENTRY sheet found');
-
-        // Get metadata
-        const examinerName = document.getElementById('examinerName').value;
-        const designation = document.getElementById('designation').value;
-        const commencedOn = document.getElementById('commencedOn').value;
-        const finishedOn = document.getElementById('finishedOn').value;
-        const noOfDays = document.getElementById('noOfDays').value;
-        const dataReceivedDate = document.getElementById('dataReceivedDate').value;
-        const district = document.getElementById('district').value;
-        const taluk = document.getElementById('taluk').value;
-        const submissionType = document.getElementById('submissionType').value;
-        const hardDiskNo = document.getElementById('hardDiskNo').value;
-        const agency = document.getElementById('agency').value;
-
-        // Helper function to set cell value while preserving style
-        function setCellValue(sheet, cellRef, value) {
-            if (!sheet[cellRef]) {
-                sheet[cellRef] = {};
-            }
-            sheet[cellRef].v = value;
-            sheet[cellRef].t = typeof value === 'number' ? 'n' : 's';
-        }
-
-        // Update metadata in ENTRY sheet (preserve cell styles)
-        // Excel uses 1-based row indexing
-        setCellValue(ws, 'E1', examinerName);  // Row 0, Col 4
-        setCellValue(ws, 'J1', commencedOn);   // Row 0, Col 9
-        setCellValue(ws, 'E2', designation);   // Row 1, Col 4
-        setCellValue(ws, 'J2', finishedOn);    // Row 1, Col 9
-        setCellValue(ws, 'L2', noOfDays);      // Row 1, Col 11
-        setCellValue(ws, 'E4', dataReceivedDate); // Row 3, Col 4
-        setCellValue(ws, 'H4', district);      // Row 3, Col 7
-        setCellValue(ws, 'J4', hardDiskNo);    // Row 3, Col 9
-        setCellValue(ws, 'E5', submissionType); // Row 4, Col 4
-        setCellValue(ws, 'H5', taluk);         // Row 4, Col 7
-        setCellValue(ws, 'F6', agency);        // Row 5, Col 5
-
-        // Column letter mapping for easier reference
-        const cols = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM','AN','AO'];
-
-        // Get village data rows
-        const tbody = document.getElementById('villageTableBody');
-        const formRows = tbody.querySelectorAll('tr');
-
-        // Update village data rows (starting from row 11 in Excel, which is row index 10)
-        formRows.forEach((formRow, index) => {
-            const rowId = index + 1;
-            const excelRow = 11 + index; // Data starts at row 11 (0-indexed: row 10)
-
-            // Update each cell in the row
-            const dataValues = [
-                rowId, // SL No
-                `V${rowId}`, // V1, V2, etc
-                getInputValue(formRow, `tileNo_${rowId}`),
-                getInputValue(formRow, `villageName_${rowId}`),
-                getInputValue(formRow, `lgdCode_${rowId}`),
-                getInputValue(formRow, `area_${rowId}`),
-                getInputValue(formRow, `talukVillage_${rowId}`),
-                getInputValue(formRow, `hobli_${rowId}`),
-                getInputValue(formRow, `dateOfFlying_${rowId}`),
-                getInputValue(formRow, `noOfFlights_${rowId}`),
-                getInputValue(formRow, `flyingHeight_${rowId}`) + (getInputValue(formRow, `flyingHeight_${rowId}`) ? ' m' : ''),
-                getInputValue(formRow, `rawImages_${rowId}`),
-                getInputValue(formRow, `intraFlightOverlap_${rowId}`),
-                getInputValue(formRow, `fileNaming_${rowId}`),
-                getInputValue(formRow, `gpsProcessing_${rowId}`),
-                '', // Column 15 is empty
-                getInputValue(formRow, `oriGsd_${rowId}`),
-                getInputValue(formRow, `demGsd_${rowId}`),
-                getInputValue(formRow, `imgProcX_${rowId}`),
-                getInputValue(formRow, `imgProcY_${rowId}`),
-                getInputValue(formRow, `imgProcZ_${rowId}`),
-                getInputValue(formRow, `gcpX_${rowId}`),
-                getInputValue(formRow, `gcpY_${rowId}`),
-                getInputValue(formRow, `gcpZ_${rowId}`),
-                getInputValue(formRow, `noOfIbase_${rowId}`),
-                getInputValue(formRow, `netAdjX_${rowId}`),
-                getInputValue(formRow, `netAdjY_${rowId}`),
-                getInputValue(formRow, `netAdjZ_${rowId}`),
-                getInputValue(formRow, `cors1_${rowId}`),
-                getInputValue(formRow, `cors2_${rowId}`),
-                getInputValue(formRow, `cors3_${rowId}`),
-                getInputValue(formRow, `cors4_${rowId}`),
-                getInputValue(formRow, `oriPixel_${rowId}`),
-                getInputValue(formRow, `demPixel_${rowId}`),
-                getInputValue(formRow, `oriQuality_${rowId}`),
-                getInputValue(formRow, `overallQuality_${rowId}`),
-                getInputValue(formRow, `spotErrors_${rowId}`),
-                getInputValue(formRow, `fileSizeOri_${rowId}`),
-                getInputValue(formRow, `fileSizeDem_${rowId}`),
-                getInputValue(formRow, `fileSizeRaw_${rowId}`),
-                getInputValue(formRow, `path_${rowId}`)
-            ];
-
-            // Set values in the worksheet
-            dataValues.forEach((value, colIndex) => {
-                const cellRef = cols[colIndex] + excelRow;
-                setCellValue(ws, cellRef, value);
-            });
-        });
-
-        // All sheets are preserved from template, only ENTRY sheet was updated
-        // Use custom filename or generate default
-        const filename = customFilename ? `${customFilename}.xlsx` : `QAQC-FS8-${submissionType}_${district}_${new Date().toISOString().split('T')[0]}.xlsx`;
-
-        console.log('Writing file:', filename);
-        console.log('Total rows updated:', formRows.length);
-
-        // Write and download the file (preserves all sheets, formulas, and formatting)
-        XLSX.writeFile(wb, filename, {
-            bookType: 'xlsx',
-            bookSST: false,
-            type: 'binary',
-            cellStyles: true
-        });
-
-        console.log('File written successfully');
-        showToast('Excel file exported successfully with all sheets!', 'success');
-    } catch (error) {
-        console.error('Error in processExcelExport:', error);
-        console.error('Error stack:', error.stack);
-        showToast('Error processing export: ' + error.message, 'error');
-    }
-}
-
-// Fallback export function (basic format without template)
-function exportBasicExcel(customFilename) {
-    try {
-        console.log('Using basic export fallback');
-        showToast('Template not available. Creating basic Excel file...', 'warning');
-
-        // Create a basic workbook
-        const wb = XLSX.utils.book_new();
-
-        // Get metadata
-        const examinerName = document.getElementById('examinerName').value;
-        const designation = document.getElementById('designation').value;
-        const district = document.getElementById('district').value;
-        const submissionType = document.getElementById('submissionType').value;
-
-        // Get village data
-        const tbody = document.getElementById('villageTableBody');
-        const formRows = tbody.querySelectorAll('tr');
-
-        // Create data array for the sheet
-        const data = [];
-
-        // Add header row
-        data.push([
-            'SL No', 'Tile No', 'Village Name', 'LGD CODE', 'Area', 'Taluk', 'Hobli',
-            'Date of Flying', 'No of Flights', 'Flying Height', 'Raw Images',
-            'Intra Flight Overlap', 'File Naming', 'GPS Processing',
-            'ORI GSD', 'DEM GSD',
-            'Img Proc X', 'Img Proc Y', 'Img Proc Z',
-            'GCP X', 'GCP Y', 'GCP Z',
-            'No of IBASE',
-            'Net Adj X', 'Net Adj Y', 'Net Adj Z',
-            'CORS 1', 'CORS 2', 'CORS 3', 'CORS 4',
-            'ORI Pixel', 'DEM Pixel',
-            'ORI Quality', 'Overall Quality',
-            'Spot Errors',
-            'File Size ORI', 'File Size DEM', 'File Size RAW',
-            'Path'
-        ]);
-
-        // Add data rows
-        formRows.forEach((formRow, index) => {
-            const rowId = index + 1;
-            data.push([
-                rowId,
-                getInputValue(formRow, `tileNo_${rowId}`),
-                getInputValue(formRow, `villageName_${rowId}`),
-                getInputValue(formRow, `lgdCode_${rowId}`),
-                getInputValue(formRow, `area_${rowId}`),
-                getInputValue(formRow, `talukVillage_${rowId}`),
-                getInputValue(formRow, `hobli_${rowId}`),
-                getInputValue(formRow, `dateOfFlying_${rowId}`),
-                getInputValue(formRow, `noOfFlights_${rowId}`),
-                getInputValue(formRow, `flyingHeight_${rowId}`),
-                getInputValue(formRow, `rawImages_${rowId}`),
-                getInputValue(formRow, `intraFlightOverlap_${rowId}`),
-                getInputValue(formRow, `fileNaming_${rowId}`),
-                getInputValue(formRow, `gpsProcessing_${rowId}`),
-                getInputValue(formRow, `oriGsd_${rowId}`),
-                getInputValue(formRow, `demGsd_${rowId}`),
-                getInputValue(formRow, `imgProcX_${rowId}`),
-                getInputValue(formRow, `imgProcY_${rowId}`),
-                getInputValue(formRow, `imgProcZ_${rowId}`),
-                getInputValue(formRow, `gcpX_${rowId}`),
-                getInputValue(formRow, `gcpY_${rowId}`),
-                getInputValue(formRow, `gcpZ_${rowId}`),
-                getInputValue(formRow, `noOfIbase_${rowId}`),
-                getInputValue(formRow, `netAdjX_${rowId}`),
-                getInputValue(formRow, `netAdjY_${rowId}`),
-                getInputValue(formRow, `netAdjZ_${rowId}`),
-                getInputValue(formRow, `cors1_${rowId}`),
-                getInputValue(formRow, `cors2_${rowId}`),
-                getInputValue(formRow, `cors3_${rowId}`),
-                getInputValue(formRow, `cors4_${rowId}`),
-                getInputValue(formRow, `oriPixel_${rowId}`),
-                getInputValue(formRow, `demPixel_${rowId}`),
-                getInputValue(formRow, `oriQuality_${rowId}`),
-                getInputValue(formRow, `overallQuality_${rowId}`),
-                getInputValue(formRow, `spotErrors_${rowId}`),
-                getInputValue(formRow, `fileSizeOri_${rowId}`),
-                getInputValue(formRow, `fileSizeDem_${rowId}`),
-                getInputValue(formRow, `fileSizeRaw_${rowId}`),
-                getInputValue(formRow, `path_${rowId}`)
-            ]);
-        });
-
-        // Create worksheet from data
-        const ws = XLSX.utils.aoa_to_sheet(data);
-
-        // Add worksheet to workbook
-        XLSX.utils.book_append_sheet(wb, ws, 'Data');
-
-        // Use custom filename or generate default
-        const filename = customFilename ? `${customFilename}.xlsx` : `QAQC-Basic-${submissionType}_${district}_${new Date().toISOString().split('T')[0]}.xlsx`;
-
-        // Write file
-        XLSX.writeFile(wb, filename);
-
-        console.log('Basic export completed');
-        showToast('Basic Excel file created (no formatting)', 'success');
-    } catch (error) {
-        console.error('Error in basic export:', error);
-        showToast('Error creating basic export: ' + error.message, 'error');
     }
 }
 
@@ -930,6 +774,103 @@ document.addEventListener('blur', function(e) {
     }
 }, true);
 
+// =====================================================================
+// SAVE/LOAD FUNCTIONALITY
+// =====================================================================
+
+// Save form data to localStorage
+function saveFormData() {
+    try {
+        const formData = {
+            metadata: {
+                examinerName: document.getElementById('examinerName').value,
+                designation: document.getElementById('designation').value,
+                commencedOn: document.getElementById('commencedOn').value,
+                finishedOn: document.getElementById('finishedOn').value,
+                noOfDays: document.getElementById('noOfDays').value,
+                dataReceivedDate: document.getElementById('dataReceivedDate').value,
+                district: document.getElementById('district').value,
+                taluk: document.getElementById('taluk').value,
+                submissionType: document.getElementById('submissionType').value,
+                hardDiskNo: document.getElementById('hardDiskNo').value,
+                agency: document.getElementById('agency').value
+            },
+            villageData: getVillageData(),
+            checkPointsData: checkPointsData,
+            rowCounter: rowCounter
+        };
+
+        localStorage.setItem('qaqcFormData', JSON.stringify(formData));
+        showToast('Form data saved successfully!', 'success');
+    } catch (error) {
+        console.error('Error saving form data:', error);
+        showToast('Error saving form data', 'error');
+    }
+}
+
+// Load form data from localStorage
+function loadFormData() {
+    try {
+        const savedData = localStorage.getItem('qaqcFormData');
+        if (!savedData) {
+            showToast('No saved data found', 'info');
+            return;
+        }
+
+        const formData = JSON.parse(savedData);
+
+        // Load metadata
+        document.getElementById('examinerName').value = formData.metadata.examinerName || '';
+        document.getElementById('designation').value = formData.metadata.designation || '';
+        document.getElementById('commencedOn').value = formData.metadata.commencedOn || '';
+        document.getElementById('finishedOn').value = formData.metadata.finishedOn || '';
+        document.getElementById('noOfDays').value = formData.metadata.noOfDays || '';
+        document.getElementById('dataReceivedDate').value = formData.metadata.dataReceivedDate || '';
+        document.getElementById('district').value = formData.metadata.district || '';
+        document.getElementById('taluk').value = formData.metadata.taluk || '';
+        document.getElementById('submissionType').value = formData.metadata.submissionType || '';
+        document.getElementById('hardDiskNo').value = formData.metadata.hardDiskNo || '';
+        document.getElementById('agency').value = formData.metadata.agency || '';
+
+        // Load village data
+        const tbody = document.getElementById('villageTableBody');
+        tbody.innerHTML = '';
+        rowCounter = 0;
+
+        if (formData.villageData && formData.villageData.length > 0) {
+            formData.villageData.forEach(village => {
+                addVillageRow();
+                const currentRow = rowCounter;
+
+                // Fill in the data
+                for (const [key, value] of Object.entries(village)) {
+                    if (key !== 'slNo') {
+                        const input = document.querySelector(`input[name="${key}_${currentRow}"], textarea[name="${key}_${currentRow}"]`);
+                        if (input) {
+                            input.value = value || '';
+
+                            // Trigger validation for numeric fields
+                            if (input.type === 'number') {
+                                input.dispatchEvent(new Event('input'));
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Load check points data
+        if (formData.checkPointsData) {
+            checkPointsData = formData.checkPointsData;
+        }
+
+        showToast('Form data loaded successfully!', 'success');
+    } catch (error) {
+        console.error('Error loading form data:', error);
+        showToast('Error loading form data', 'error');
+    }
+}
+
 // Auto-save functionality (every 2 minutes)
 setInterval(() => {
     const autoSave = document.getElementById('examinerName').value;
@@ -938,3 +879,182 @@ setInterval(() => {
         console.log('Auto-saved at', new Date().toLocaleTimeString());
     }
 }, 120000); // 2 minutes
+
+// =====================================================================
+// CHECK POINTS MODAL FUNCTIONS (ANEX-IV)
+// =====================================================================
+
+// Open check points modal for a specific village row
+function openCheckPointsModal(rowId) {
+    currentVillageRow = rowId;
+    const modal = document.getElementById('checkPointsModal');
+
+    // Get village name from the table
+    const villageNameInput = document.querySelector(`input[name="villageName_${rowId}"]`);
+    const villageName = villageNameInput ? villageNameInput.value : `Village ${rowId}`;
+
+    document.getElementById('modalVillageName').textContent = villageName;
+
+    // Load existing check points data if available
+    if (checkPointsData[rowId]) {
+        loadCheckPointsIntoModal(checkPointsData[rowId]);
+    } else {
+        // Initialize with empty data
+        clearCheckPointsModal();
+    }
+
+    modal.style.display = 'block';
+}
+
+// Close check points modal
+function closeCheckPointsModal() {
+    const modal = document.getElementById('checkPointsModal');
+    modal.style.display = 'none';
+    currentVillageRow = null;
+}
+
+// Clear check points modal
+function clearCheckPointsModal() {
+    document.getElementById('onMarker').value = '';
+    document.getElementById('spatiallyDistributed').value = '';
+    document.getElementById('checkPointsBody').innerHTML = '';
+}
+
+// Load check points data into modal
+function loadCheckPointsIntoModal(data) {
+    document.getElementById('onMarker').value = data.onMarker || '';
+    document.getElementById('spatiallyDistributed').value = data.spatiallyDistributed || '';
+
+    // Clear existing check points
+    document.getElementById('checkPointsBody').innerHTML = '';
+
+    // Load check points
+    if (data.checkPoints && data.checkPoints.length > 0) {
+        data.checkPoints.forEach((cp, index) => {
+            addCheckPointRow(index + 1, cp);
+        });
+    }
+}
+
+// Add a check point row to the modal table
+function addCheckPoint() {
+    const tbody = document.getElementById('checkPointsBody');
+    const currentCount = tbody.children.length;
+
+    if (currentCount >= 12) {
+        showToast('Maximum 12 check points allowed per village', 'error');
+        return;
+    }
+
+    addCheckPointRow(currentCount + 1);
+}
+
+// Add check point row with optional data
+function addCheckPointRow(number, data = {}) {
+    const tbody = document.getElementById('checkPointsBody');
+    const row = document.createElement('tr');
+    row.setAttribute('data-cp-id', number);
+
+    row.innerHTML = `
+        <td>${number}</td>
+        <td><input type="text" name="cpName_${number}" value="${data.name || ''}" placeholder="CP ${number}"></td>
+        <td><input type="number" step="0.01" name="cpHDistError_${number}" value="${data.hDistError || ''}" placeholder="H.Dist Error"></td>
+        <td><input type="number" step="0.001" name="cpActualHeight_${number}" value="${data.actualHeight || ''}" placeholder="Actual Height" onchange="calculateHeightError(${number})"></td>
+        <td><input type="number" step="0.001" name="cpObservedHeight_${number}" value="${data.observedHeight || ''}" placeholder="Observed Height" onchange="calculateHeightError(${number})"></td>
+        <td><input type="number" step="0.01" name="cpHeightError_${number}" value="${data.heightError || ''}" placeholder="Height Error" readonly></td>
+        <td><button type="button" class="btn btn-danger btn-sm" onclick="removeCheckPoint(${number})">Remove</button></td>
+    `;
+
+    tbody.appendChild(row);
+}
+
+// Calculate height error for a check point
+function calculateHeightError(cpNumber) {
+    const actualHeight = parseFloat(document.querySelector(`input[name="cpActualHeight_${cpNumber}"]`).value) || 0;
+    const observedHeight = parseFloat(document.querySelector(`input[name="cpObservedHeight_${cpNumber}"]`).value) || 0;
+
+    // Formula: (Actual - Observed) * 100
+    const heightError = (actualHeight - observedHeight) * 100;
+
+    document.querySelector(`input[name="cpHeightError_${cpNumber}"]`).value = heightError.toFixed(2);
+}
+
+// Remove a check point row
+function removeCheckPoint(cpNumber) {
+    const row = document.querySelector(`tr[data-cp-id="${cpNumber}"]`);
+    if (row) {
+        row.remove();
+        // Renumber remaining rows
+        renumberCheckPoints();
+    }
+}
+
+// Renumber check points after deletion
+function renumberCheckPoints() {
+    const tbody = document.getElementById('checkPointsBody');
+    const rows = tbody.querySelectorAll('tr');
+
+    rows.forEach((row, index) => {
+        const number = index + 1;
+        row.setAttribute('data-cp-id', number);
+        row.children[0].textContent = number; // Update number column
+
+        // Update input names and onclick handlers
+        const inputs = row.querySelectorAll('input');
+        inputs[0].name = `cpName_${number}`;
+        inputs[0].placeholder = `CP ${number}`;
+        inputs[1].name = `cpHDistError_${number}`;
+        inputs[2].name = `cpActualHeight_${number}`;
+        inputs[2].setAttribute('onchange', `calculateHeightError(${number})`);
+        inputs[3].name = `cpObservedHeight_${number}`;
+        inputs[3].setAttribute('onchange', `calculateHeightError(${number})`);
+        inputs[4].name = `cpHeightError_${number}`;
+
+        const button = row.querySelector('button');
+        button.setAttribute('onclick', `removeCheckPoint(${number})`);
+    });
+}
+
+// Save check points data
+function saveCheckPoints() {
+    if (!currentVillageRow) {
+        showToast('Error: No village selected', 'error');
+        return;
+    }
+
+    // Get metadata
+    const onMarker = document.getElementById('onMarker').value;
+    const spatiallyDistributed = document.getElementById('spatiallyDistributed').value;
+
+    // Get all check points
+    const checkPoints = [];
+    const tbody = document.getElementById('checkPointsBody');
+    const rows = tbody.querySelectorAll('tr');
+
+    rows.forEach((row, index) => {
+        const number = index + 1;
+        const name = document.querySelector(`input[name="cpName_${number}"]`).value;
+        const hDistError = document.querySelector(`input[name="cpHDistError_${number}"]`).value;
+        const actualHeight = document.querySelector(`input[name="cpActualHeight_${number}"]`).value;
+        const observedHeight = document.querySelector(`input[name="cpObservedHeight_${number}"]`).value;
+        const heightError = document.querySelector(`input[name="cpHeightError_${number}"]`).value;
+
+        checkPoints.push({
+            name,
+            hDistError,
+            actualHeight,
+            observedHeight,
+            heightError
+        });
+    });
+
+    // Save to global checkPointsData
+    checkPointsData[currentVillageRow] = {
+        onMarker,
+        spatiallyDistributed,
+        checkPoints
+    };
+
+    showToast(`Check points saved for Village ${currentVillageRow} (${checkPoints.length} points)`, 'success');
+    closeCheckPointsModal();
+}
